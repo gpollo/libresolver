@@ -139,6 +139,8 @@ expression get_basic_5() {
      * movslq (%r2,%r3,4),%r1
      * add    %r2,%r1
      * jmpq   *%r1
+     *
+     * DONE
      */
     return {
         {

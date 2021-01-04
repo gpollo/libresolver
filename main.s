@@ -1,3 +1,9 @@
+# To get instruction's bytes, execute the following commands.
+#
+# $ gcc main.s -g -o main
+# $ objdump -D main | grep -a10 main
+#
+
 .global main
 
 .text
@@ -39,9 +45,18 @@ main:
     #jmpq   *%rax
 
     # case 4
-    cmp    $8,%rcx
+    #cmp    $8,%rcx
+    #ja     10
+    #lea    1000(%rip),%rbx
+    #movslq 100(%rbx,%rcx,4),%rax
+    #add    %rbx,%rax
+    #jmpq   *%rax
+
+    # case 5
+    cmp    $7,%edx
     ja     10
     lea    1000(%rip),%rbx
+    mov    %edx,%ecx
     movslq 100(%rbx,%rcx,4),%rax
     add    %rbx,%rax
     jmpq   *%rax

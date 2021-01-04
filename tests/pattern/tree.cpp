@@ -2,6 +2,7 @@
 #include <libresolver/cases/case_2.hpp>
 #include <libresolver/cases/case_3.hpp>
 #include <libresolver/cases/case_4.hpp>
+#include <libresolver/cases/case_5.hpp>
 #include <libresolver/pattern/matcher.hpp>
 #include <tests/dummy/memory.hpp>
 #include <tests/external/catch.hpp>
@@ -27,6 +28,10 @@ libresolver::pattern::tree create_tree() {
     auto case_4 = std::make_shared<libresolver::cases::case_4>();
     REQUIRE(case_4 != nullptr);
     REQUIRE(tree.add(case_4->get_pattern(), case_4));
+
+    auto case_5 = std::make_shared<libresolver::cases::case_5>();
+    REQUIRE(case_5 != nullptr);
+    REQUIRE(tree.add(case_5->get_pattern(), case_5));
 
     return tree;
 }
