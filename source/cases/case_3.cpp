@@ -51,7 +51,6 @@ pattern::tree::pattern case_3::get_pattern() const {
                 operand::make_mem2(value::VALUE_4, reg::REG_3, size::QWORD),
                 operand::make_reg(reg::REG_1, size::DWORD)
             ), {
-                .track_regs_ = {reg::REG_3},
                 .ignore_regs_ = {reg::REG_1},
                 .track_insns_ = {X86_INS_JA},
             }
@@ -67,7 +66,6 @@ pattern::tree::pattern case_3::get_pattern() const {
                 operand::make_imm(value::VALUE_6),
                 operand::make_mem2(value::VALUE_7, reg::REG_3, size::QWORD)
             ), {
-                .ignore_regs_ = {reg::REG_3},
                 .ignore_insns_ = {X86_INS_CMP},
             }
         }
