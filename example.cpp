@@ -8,6 +8,13 @@
 
 #if 0
 
+/*
+ * TODO
+ *
+ * Some sequences of instructions should be considered "atomic"
+ * in the tree. For example, the "ja" followed by a "cmp".
+ */
+
 expression get_basic_1() {
     /*
      * cmp    $k3,%r3d
@@ -225,7 +232,7 @@ expression get_basic_7() {
     };
 }
 
-expression get_basic_9() {
+expression get_basic_8() {
     /*
      * cmpl   $k4,k5(%rip)
      * ja     k3
@@ -256,31 +263,35 @@ expression get_basic_9() {
     };
 }
 
-expression get_basic_10() {
+
+expression get_basic_9() {
     /*
-     * cmpl   $k4,k2(%r3)
-     * ja     k3
-     * mov    k2(%r3),%r1d
-     * lea    k1(%rip),%r2
+     * lea    k4(%rip),%r2
+     * cmpl   $k3,k1(%r3)
+     * ja     k2
+     * mov    k1(%r3),%r1d
      * movslq (%r2,%r1,4),%r1
      * add    %r2,%r1
      * jmpq   *%r1
+     *
+     * DONE
      */
     return {
         {
             jmpq(addr::reg(r1_.qword())),
             add(addr::reg(r2_.qword()), addr::reg(r1_.qword())),
             movslq(addr::base4(0, r2_.qword(), r1_.qword(), 4), addr::reg(r1_.qword())),
-            lea(addr::base2(k1_, rip_.qword()), addr::reg(r2_.qword())),
-            mov(addr::base2(k2_, r3_.qword()), addr::reg(r1_.dword())),
-            ja(addr::imm(k3_),
-            cmpl(addr::imm(k4_), addr::base2(k2_, r3_.qword())),
+            mov(addr::base(k1_, r3_.qword()), addr::reg(r1_.dword())),
+            ja(addr::imm(k2_)),
+            cmpl(addr::imm(k3_), addr::base2(k2_, r3_.qword())),
+            ignore(r3_),
+            lea(addr::base2(k4_, rip_.qword()), addr::reg(r2_.qword())),
         },
         [&]() {
-            return {0, k4_};
+            return {0, k3_};
         },
         [&](int i) {
-            return memory_.read_sign_extend_32((k1_ + rip_[0]) + 4 * i) + (k1_ + rip_[0]);
+            return memory_.read_sign_extend_32((k4_ + rip_[0]) + 4 * i) + (k4_ + rip_[0]);
         }
     };
 }
@@ -312,36 +323,6 @@ expression get_basic_11() {
         },
         [&](int i) {
             return memory_.read_sign_extend_32((k1_ + rip_[0]) + 4 * k2_) + (k1_ + rip_[0]);
-        }
-    };
-}
-
-expression get_basic_12() {
-    /*
-     * lea    k4(%rip),%r2
-     * cmpl   $k3,k1(%r3)
-     * ja     k2
-     * mov    k1(%r3),%r1d
-     * movslq (%r2,%r1,4),%r1
-     * add    %r2,%r1
-     * jmpq   *%r1
-     */
-    return {
-        {
-            jmpq(addr::reg(r1_.qword())),
-            add(addr::reg(r2_.qword()), addr::reg(r1_.qword())),
-            movslq(addr::base4(0, r2_.qword(), r1_.qword(), 4), addr::reg(r1_.qword())),
-            mov(addr::base(k1_, r3_.qword()), addr::reg(r1_.dword())),
-            ja(addr::imm(k2_)),
-            cmpl(addr::imm(k3_), addr::base2(k2_, r3_.qword())),
-            ignore(r3_),
-            lea(addr::base2(k4_, rip_.qword()), addr::reg(r2_.qword())),
-        },
-        [&]() {
-            return {0, k3_};
-        },
-        [&](int i) {
-            return memory_.read_sign_extend_32((k4_ + rip_[0]) + 4 * i) + (k4_ + rip_[0]);
         }
     };
 }
