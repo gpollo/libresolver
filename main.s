@@ -4,9 +4,8 @@
 # $ objdump -D main | grep -a10 main
 #
 
-.global main
-
-.text
+.section .text
+    .global main
 main:
     # case 1
     #cmp    $5,%ecx
@@ -71,10 +70,19 @@ main:
     #jmpq   *%rax
 
     # case 7
-    lea    1000(%rip),%rbx
-    cmp    $6,%al
+    #lea    1000(%rip),%rbx
+    #cmp    $6,%al
+    #ja     10
+    #movzbl %al,%eax
+    #movslq 100(%rbx,%rax,4),%rax
+    #add    %rbx,%rax
+    #jmpq   *%rax
+
+    # case 8
+    cmpl   $6,22(%rip)
     ja     10
-    movzbl %al,%eax
+    mov    10(%rip),%eax
+    lea    1000(%rip),%rbx
     movslq 100(%rbx,%rax,4),%rax
     add    %rbx,%rax
     jmpq   *%rax
