@@ -13,6 +13,9 @@
  *
  * Some sequences of instructions should be considered "atomic"
  * in the tree. For example, the "ja" followed by a "cmp".
+ *
+ * Check if different actions should be an error. It probably
+ * shouldn't. Search for "used by other pattern" in the cases.
  */
 
 expression get_basic_1() {
@@ -359,6 +362,37 @@ expression get_basic_11() {
 
 expression get_basic_12() {
     /*
+     * lea    k3(%rip),%r2
+     * cmp    $k2,%r1d
+     * ja     k1
+     * movslq (%r2,%r1,4),%r1
+     * add    %r2,%r1
+     * jmpq   *%r1
+     *
+     * DONE
+     */
+    return {
+        {
+            jmpq(addr::reg(r1_.qword())),
+            add(addr::reg(r2_.qword()), addr::reg(r1_.qword())),
+            movslq(addr::base4(0, r2_.qword(), r1_.qword(), 4), addr::reg(r1_.qword())),
+            ja(addr::imm(k1_)),
+            cmpl(addr::imm(k2_), addr::reg(r1_.dword())),
+            ignore(r1_),
+            lea(addr::base2(k3_, rip_.qword()), addr::reg(r2_.qword())),
+        },
+        [&]() {
+            return {0, k2_};
+        },
+        [&](int i) {
+            return memory_.read_sign_extend_32((k3_ + rip_[0]) + 4 * i) + (k3_ + rip_[0]);
+        }
+    };
+}
+
+
+expression get_basic_13() {
+    /*
      * In this case, there is no variable index and jump can only land
      * in a single location. The code source that can generate such case
      * is unknown.
@@ -413,34 +447,6 @@ expression get_basic_15() {
         },
         [&](int i) {
             return memory_.read_sign_extend_32((k1_ + rip_[0]) + 4 * i) + (k1_ + rip_[0]);
-        }
-    };
-}
-
-expression get_basic_16() {
-    /*
-     * lea    k3(%rip),%r2
-     * cmp    $k2,%r1d
-     * ja     k1
-     * movslq (%r2,%r1,4),%r1
-     * add    %r2,%r1
-     * jmpq   *%r1
-     */
-    return {
-        {
-            jmpq(addr::reg(r1_.qword())),
-            add(addr::reg(r2_.qword()), addr::reg(r1_.qword())),
-            movslq(addr::base4(0, r2_.qword(), r1_.qword(), 4), addr::reg(r1_.qword())),
-            ja(addr::imm(k1_)),
-            cmpl(addr::imm(k2_), addr::reg(r1_.dword())),
-            ignore(r1_),
-            lea(addr::base2(k3_, rip_.qword()), addr::reg(r2_.qword())),
-        },
-        [&]() {
-            return {0, k2_};
-        },
-        [&](int i) {
-            return memory_.read_sign_extend_32((k3_ + rip_[0]) + 4 * i) + (k3_ + rip_[0]);
         }
     };
 }

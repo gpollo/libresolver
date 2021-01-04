@@ -38,7 +38,9 @@ pattern::tree::pattern case_8::get_pattern() const {
             instruction::movsxd(
                 operand::make_mem4(value::VALUE_1, reg::REG_2, size::QWORD, reg::REG_1, size::QWORD, value::VALUE_2),
                 operand::make_reg(reg::REG_1, size::QWORD)
-            ), {}
+            ), {
+                .track_insns_ = {X86_INS_JA}, /* used by other pattern */
+            }
         }, {
             instruction::lea(
                 operand::make_mem2(value::VALUE_3, reg::RIP, size::QWORD),
