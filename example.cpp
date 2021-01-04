@@ -390,8 +390,38 @@ expression get_basic_12() {
     };
 }
 
-
 expression get_basic_13() {
+    /*
+     * cmpl   $k4,k2(%r1)
+     * ja     k3
+     * mov    k2(%r1),%r1d
+     * lea    k1(%rip),%r2
+     * movslq (%r2,%r1,4),%r1
+     * add    %r2,%r1
+     * jmpq   *%r1
+     *
+     * DONE
+     */
+    return {
+        {
+            jmpq(addr::reg(r1_.qword())),
+            add(addr::reg(r2_.qword()), addr::reg(r1_.qword())),
+            movslq(addr::base4(0, r2_.qword(), r1_.qword(), 4), addr::reg(r1_.qword())),
+            lea(addr::base2(k1_, rip_.qword()), addr::reg(r2_.qword())),
+            mov(addr::base2(k2_, r1_.qword()), addr::reg(r1_.dword())),
+            ja(addr::imm(k3_)),
+            cmpl(addr::imm(k4_), addr::base2(k2_, r1_.qword())),
+        },
+        [&]() {
+            return {0, k4_};
+        },
+        [&](int i) {
+            return memory_.read_sign_extend_32((k1_ + rip_[0]) + 4 * i) + (k1_ + rip_[0]);
+        }
+    };
+}
+
+expression get_basic_14() {
     /*
      * In this case, there is no variable index and jump can only land
      * in a single location. The code source that can generate such case
@@ -418,35 +448,6 @@ expression get_basic_13() {
         },
         [&](int i) {
             return memory_.read_sign_extend_32((k1_ + rip_[0]) + 4 * k2_) + (k1_ + rip_[0]);
-        }
-    };
-}
-
-expression get_basic_15() {
-    /*
-     * cmpl   $k4,k2(%r1)
-     * ja     k3
-     * mov    k2(%r1),%r1d
-     * lea    k1(%rip),%r2
-     * movslq (%r2,%r1,4),%r1
-     * add    %r2,%r1
-     * jmpq   *%r1
-     */
-    return {
-        {
-            jmpq(addr::reg(r1_.qword())),
-            add(addr::reg(r2_.qword()), addr::reg(r1_.qword())),
-            movslq(addr::base4(0, r2_.qword(), r1_.qword(), 4), addr::reg(r1_.qword())),
-            lea(addr::base2(k1_, rip_.qword()), addr::reg(r2_.qword())),
-            mov(addr::base2(k2_, r1_.qword()), addr::reg(r1_.dword())),
-            ja(addr::imm(k3_)),
-            cmpl(addr::imm(k4_), addr::base2(k2_, r1_.qword())),
-        },
-        [&]() {
-            return {0, k4_};
-        },
-        [&](int i) {
-            return memory_.read_sign_extend_32((k1_ + rip_[0]) + 4 * i) + (k1_ + rip_[0]);
         }
     };
 }
