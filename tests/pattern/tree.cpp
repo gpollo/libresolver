@@ -1,5 +1,6 @@
 #include <libresolver/cases/case_1.hpp>
 #include <libresolver/cases/case_10.hpp>
+#include <libresolver/cases/case_11.hpp>
 #include <libresolver/cases/case_2.hpp>
 #include <libresolver/cases/case_3.hpp>
 #include <libresolver/cases/case_4.hpp>
@@ -57,6 +58,10 @@ libresolver::pattern::tree create_tree() {
     auto case_10 = std::make_shared<libresolver::cases::case_10>();
     REQUIRE(case_10 != nullptr);
     REQUIRE(tree.add(case_10->get_pattern(), case_10));
+
+    auto case_11 = std::make_shared<libresolver::cases::case_11>();
+    REQUIRE(case_11 != nullptr);
+    REQUIRE(tree.add(case_11->get_pattern(), case_11));
 
     return tree;
 }

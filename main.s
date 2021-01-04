@@ -97,9 +97,18 @@ main:
     #jmpq   *%rax
 
     # case 10
-    cmp    $6,%eax
+    #cmp    $6,%eax
+    #ja     10
+    #lea    1000(%rip),%rbx
+    #movslq 100(%rbx,%rax,4),%rax
+    #add    %rbx,%rax
+    #jmpq   *%rax
+
+    # case 11
+    cmp    $9,%al
     ja     10
     lea    1000(%rip),%rbx
+    movzbl %al,%eax
     movslq 100(%rbx,%rax,4),%rax
     add    %rbx,%rax
     jmpq   *%rax

@@ -325,7 +325,39 @@ expression get_basic_10() {
     };
 }
 
+
 expression get_basic_11() {
+    /*
+     * cmp    $k3,%r1b
+     * ja     k2
+     * lea    k1(%rip),%r2
+     * movzbl %r1b,%r1d
+     * movslq (%r2,%r1,4),%r1
+     * add    %r2,%r1
+     * jmpq   *%r1
+     *
+     * DONE
+     */
+    return {
+        {
+            jmpq(addr::reg(r1_.qword())),
+            add(addr::reg(r2_.qword()), addr::reg(r1_.qword())),
+            movslq(addr::base4(0, r2_.qword(), r1_.qword(), 4), addr::reg(r1_.qword())),
+            movzbl(addr::reg(r1_.byte()), addr::reg(r1_.dword())),
+            lea(addr::base2(k1_, rip_.qword()), addr::reg(r2_.qword())),
+            ja(addr::imm(k2_)),
+            cmp(addr::imm(k3_), addr::reg(r1_.byte())),
+        },
+        [&]() {
+            return {0, k3_};
+        },
+        [&](int i) {
+            return memory_.read_sign_extend_32((k1_ + rip_[0]) + 4 * zero_extend_byte(i)) + (k1_ + rip_[0]);
+        }
+    };
+}
+
+expression get_basic_12() {
     /*
      * In this case, there is no variable index and jump can only land
      * in a single location. The code source that can generate such case
@@ -352,35 +384,6 @@ expression get_basic_11() {
         },
         [&](int i) {
             return memory_.read_sign_extend_32((k1_ + rip_[0]) + 4 * k2_) + (k1_ + rip_[0]);
-        }
-    };
-}
-
-expression get_basic_14() {
-    /*
-     * cmp    $k3,%r1b
-     * ja     k2
-     * lea    k1(%rip),%r2
-     * movzbl %r1b,%r1d
-     * movslq (%r2,%r1,4),%r1
-     * add    %r2,%r1
-     * jmpq   *%r1
-     */
-    return {
-        {
-            jmpq(addr::reg(r1_.qword())),
-            add(addr::reg(r2_.qword()), addr::reg(r1_.qword())),
-            movslq(addr::base4(0, r2_.qword(), r1_.qword(), 4), addr::reg(r1_.qword())),
-            movzbl(addr::reg(r1_.byte()), addr::reg(r1_.dword())),
-            lea(addr::base2(k1_, rip_.qword()), addr::reg(r2_.qword())),
-            ja(addr::imm(k2_)),
-            cmp(addr::imm(k3_), addr::reg(r1_.byte())),
-        },
-        [&]() {
-            return {0, k3_};
-        },
-        [&](int i) {
-            return memory_.read_sign_extend_32((k1_ + rip_[0]) + 4 * zero_extend_byte(i)) + (k1_ + rip_[0]);
         }
     };
 }
