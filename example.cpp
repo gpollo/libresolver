@@ -423,6 +423,36 @@ expression get_basic_13() {
 
 expression get_basic_14() {
     /*
+     * lea k3(%rip),%r2
+     * cmp $k2,%r3b
+     * ja k1
+     * movslq (%r2,%r3,4),%r1
+     * add %r2,%r1
+     * jmpq *%r1
+     *
+     * DONE
+     */
+    return {
+        {
+            jmpq(addr::reg(r1_.qword())),
+            add(addr::reg(r2_.qword()), addr::reg(r1_.qword())),
+            movslq(addr::base4(0, r2_.qword(), r3_.qword(), 4), addr::reg(r1_.qword())),
+            ja(addr::imm(k1_)),
+            cmp(addr::imm(k2_), addr::reg(r3_.byte())),
+            ignore(r3_),
+            lea(addr::base2(k3_, rip_.qword()), addr::reg(r2_.qword())),
+        },
+        [&]() {
+            return {0, k2_};
+        },
+        [&](int i) {
+            return memory_.read_sign_extend_32((k3_ + rip_[0]) + 4 * i) + (k3_ + rip_[0]);
+        }
+    };
+}
+
+expression get_basic_15() {
+    /*
      * In this case, there is no variable index and jump can only land
      * in a single location. The code source that can generate such case
      * is unknown.
@@ -452,33 +482,7 @@ expression get_basic_14() {
     };
 }
 
-expression get_basic_17() {
-    /*
-     * lea k3(%rip),%r2
-     * cmp $k2,%r3b
-     * ja k1
-     * movslq (%r2,%r3,4),%r1
-     * add %r2,%r1
-     * jmpq *%r1
-     */
-    return {
-        {
-            jmpq(addr::reg(r1_.qword())),
-            add(addr::reg(r2_.qword()), addr::reg(r1_.qword())),
-            movslq(addr::base4(0, r2_.qword(), r3_.qword(), 4), addr::reg(r1_.qword())),
-            ja(addr::imm(k1_)),
-            cmp(addr::imm(k2_), addr::reg(r3_.byte())),
-            ignore(r3_),
-            lea(addr::base2(k3_, rip_.qword()), addr::reg(r2_.qword())),
-        },
-        [&]() {
-            return {0, k2_};
-        },
-        [&](int i) {
-            return memory_.read_sign_extend_32((k3_ + rip_[0]) + 4 * i) + (k3_ + rip_[0]);
-        }
-    };
-}
+
 
 expression get_basic_18() {
     /*

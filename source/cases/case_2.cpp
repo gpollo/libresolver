@@ -39,6 +39,7 @@ pattern::tree::pattern case_2::get_pattern() const {
             ), {
                 .track_regs_ = {reg::REG_3},
                 .ignore_regs_ = {reg::REG_1},
+                .track_insns_ = {X86_INS_JA}, /* used by other pattern */
             }
         }, {
             instruction::mov(
