@@ -64,30 +64,6 @@ class context {
         return allocated_rip_values_[index];
     }
 
-    [[deprecated]] bool has(const std::vector<placeholder::reg>& regs) const {
-        for (auto reg : regs) {
-            if (!allocated_registers_.contains(reg)) {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    [[deprecated]] bool has(const std::vector<placeholder::value>& values) const {
-        for (auto value : values) {
-            if (!allocated_values_.contains(value)) {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    [[deprecated]] bool has_rip(unsigned int index) const {
-        return (index < allocated_rip_values_.size());
-    }
-
     std::optional<instruction::base> build_instruction(cs_insn& insn) {
         if (!has_last_instruction_been_validated()) {
             std::cerr << "[context::build_instruction] last instruction has not been validated" << std::endl;
