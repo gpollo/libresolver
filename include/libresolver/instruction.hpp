@@ -58,6 +58,7 @@ using ja     = instruction::one_op<x86_insn::X86_INS_JA>;
 using jmp    = instruction::one_op<x86_insn::X86_INS_JMP>;
 using lea    = instruction::two_ops<x86_insn::X86_INS_LEA>;
 using mov    = instruction::two_ops<x86_insn::X86_INS_MOV>;
+using movzx  = instruction::two_ops<x86_insn::X86_INS_MOVZX>;
 using movsxd = instruction::two_ops<x86_insn::X86_INS_MOVSXD>;
 
 } /* namespace libresolver::instruction */
@@ -86,6 +87,8 @@ static inline string to_string_insn(x86_insn insn) {
         return "lea";
     case x86_insn::X86_INS_MOV:
         return "mov";
+    case x86_insn::X86_INS_MOVZX:
+        return "movzx";
     case x86_insn::X86_INS_MOVSXD:
         return "movsxd";
     default:

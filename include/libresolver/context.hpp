@@ -116,6 +116,8 @@ class context {
             return create_instruction<instruction::lea>(insn, operands[0], operands[1]);
         case x86_insn::X86_INS_MOV:
             return create_instruction<instruction::mov>(insn, operands[0], operands[1]);
+        case x86_insn::X86_INS_MOVZX:
+            return create_instruction<instruction::movzx>(insn, operands[0], operands[1]);
         case x86_insn::X86_INS_MOVSXD:
             return create_instruction<instruction::movsxd>(insn, operands[0], operands[1]);
         default:

@@ -193,7 +193,7 @@ expression get_basic_6() {
     };
 }
 
-expression get_basic_8() {
+expression get_basic_7() {
     /*
     * lea    k3(%rip),%r2
     * cmp    $k2,%r1b
@@ -202,6 +202,8 @@ expression get_basic_8() {
     * movslq (%r2,%r1,4),%r1
     * add    %r2,%r1
     * jmpq   *%r1
+    *
+    * DONE
     */
     return {
         {
