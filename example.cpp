@@ -163,39 +163,6 @@ expression get_basic_5() {
 
 expression get_basic_6() {
     /*
-     * In this case, the final expression don't depends on the comparison
-     * itself because %r1d it depends on a global variable that is reloaded
-     * after the comparison.
-     *
-     *   cmp    $k4,%r1d
-     *   ja     k3
-     * > mov    k2(%rip),%r1d
-     *   lea    k1(%rip),%r2
-     *   movslq (%r2,%r1,4),%r1
-     *   add    %r2,%r1
-     *   jmpq   *%r1
-     */
-    return {
-        {
-            jmpq(addr::reg(r1_.qword())),
-            add(addr::reg(r2_.qword()), addr::reg(r1_.qword())),
-            movslq(addr::base4(0, r2_.qword(), r1_.qword(), 4), addr::reg(r1_.qword())),
-            lea(addr::base2(k1_, rip_.qword()), addr::reg(r2_.qword())),
-            mov(addr::base2(k2_, rip_.qword()), addr::reg(r1.dword())),
-            ja(addr::imm(k3_),
-            cmp(addr::imm(k4_), addr::reg(r1_.dword())),
-        },
-        [&]() {
-            return {0, k4_};
-        },
-        [&](int i) {
-            return memory_.read_sign_extend_32((k1_ + rip_[0]) + 4 * i) + (k1_ + rip_[0]);
-        }
-    };
-}
-
-expression get_basic_7() {
-    /*
      * lea    k4(%rip),%r2
      * cmpl   $k3,k1(%r1)
      * ja     k2
@@ -203,6 +170,8 @@ expression get_basic_7() {
      * movslq (%r2,%r1,4),%r1
      * add    %r2,%r1
      * jmpq   *%r1
+     *
+     * DONE
      */
     return {
         {
@@ -566,6 +535,39 @@ expression get_basic_19() {
         },
         [&]() {
             return {0, k3_};
+        },
+        [&](int i) {
+            return memory_.read_sign_extend_32((k1_ + rip_[0]) + 4 * i) + (k1_ + rip_[0]);
+        }
+    };
+}
+
+expression get_basic_20() {
+    /*
+     * In this case, the final expression don't depends on the comparison
+     * itself because %r1d it depends on a global variable that is reloaded
+     * after the comparison.
+     *
+     *   cmp    $k4,%r1d
+     *   ja     k3
+     * > mov    k2(%rip),%r1d
+     *   lea    k1(%rip),%r2
+     *   movslq (%r2,%r1,4),%r1
+     *   add    %r2,%r1
+     *   jmpq   *%r1
+     */
+    return {
+        {
+            jmpq(addr::reg(r1_.qword())),
+            add(addr::reg(r2_.qword()), addr::reg(r1_.qword())),
+            movslq(addr::base4(0, r2_.qword(), r1_.qword(), 4), addr::reg(r1_.qword())),
+            lea(addr::base2(k1_, rip_.qword()), addr::reg(r2_.qword())),
+            mov(addr::base2(k2_, rip_.qword()), addr::reg(r1.dword())),
+            ja(addr::imm(k3_),
+            cmp(addr::imm(k4_), addr::reg(r1_.dword())),
+        },
+        [&]() {
+            return {0, k4_};
         },
         [&](int i) {
             return memory_.read_sign_extend_32((k1_ + rip_[0]) + 4 * i) + (k1_ + rip_[0]);
