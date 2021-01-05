@@ -46,6 +46,7 @@ tests_source = [
     'source/cases/case_13.cpp',
     'source/cases/case_14.cpp',
     'source/instruction.cpp',
+    'source/porcelain.cpp',
     'source/pattern/tree.cpp',
     'source/placeholder.cpp',
     'source/memory.cpp',
