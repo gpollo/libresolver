@@ -41,7 +41,7 @@ public:
             std::cerr << "[tests::dummy::memory::read_debug::" << type << "] 0x" << std::hex << addr << " => ";
             
             if (value_opt.has_value()) {
-                std::cerr << std::dec << value_opt.value() << std::endl;
+                std::cerr << std::dec << +value_opt.value() << std::endl;
             } else {
                 std::cerr << std::dec << "failed" << std::endl;
             }

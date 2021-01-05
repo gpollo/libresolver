@@ -48,6 +48,7 @@ tests_source = [
     'source/instruction.cpp',
     'source/pattern/tree.cpp',
     'source/placeholder.cpp',
+    'source/memory.cpp',
     'source/utils/registers.cpp',
     'source/watch_list.cpp',
     'tests/cases/case_1.cpp',
@@ -66,6 +67,7 @@ tests_source = [
     'tests/cases/case_14.cpp',
     'tests/context.cpp',
     'tests/main.cpp',
+    'tests/memory.cpp',
     'tests/pattern/tree.cpp',
     'tests/watch_list.cpp',
 ]
