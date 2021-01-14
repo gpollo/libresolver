@@ -26,6 +26,8 @@ string to_string_insn(x86_insn insn) {
         return "add";
     case x86_insn::X86_INS_CMP:
         return "cmp";
+    case x86_insn::X86_INS_CDQE:
+        return "cltq";
     case x86_insn::X86_INS_JA:
         return "ja";
     case x86_insn::X86_INS_JMP:

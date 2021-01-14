@@ -53,6 +53,7 @@ TEST_CASE("pattern tree should match pattern case 8", "[libresolver::cases::case
         REQUIRE(context.get(value::VALUE_7).value_or(-1) == 22);
         REQUIRE(context.get(value::VALUE_8).value_or(-1) == -1);
         REQUIRE(context.get(value::VALUE_9).value_or(-1) == -1);
+        REQUIRE(context.get(value::VALUE_10).value_or(-1) == -1);
         REQUIRE(context.get_rip(0).value_or(-1) == 26);
         REQUIRE(context.get_rip(1).value_or(-1) == 19);
         REQUIRE(context.get_rip(2).value_or(-1) == 7);

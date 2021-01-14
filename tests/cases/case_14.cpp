@@ -7,7 +7,7 @@
 using libresolver::placeholder::reg;
 using libresolver::placeholder::value;
 
-namespace tests::cases::case_13 {
+namespace tests::cases::case_14 {
 
 TEST_CASE("pattern tree should match pattern case 14", "[libresolver::cases::case_14]") {
     x86::engine engine;
@@ -63,4 +63,4 @@ TEST_CASE("pattern tree should match pattern case 14", "[libresolver::cases::cas
     }
 }
 
-}  // namespace tests::cases::case_13
+} /* namespace tests::cases::case_14 */

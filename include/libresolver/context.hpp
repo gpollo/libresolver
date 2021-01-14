@@ -84,6 +84,8 @@ class context {
             return create_instruction<instruction::add>(insn, operands[0], operands[1]);
         case x86_insn::X86_INS_CMP:
             return create_instruction<instruction::cmp>(insn, operands[0], operands[1]);
+        case x86_insn::X86_INS_CDQE:
+            return create_instruction<instruction::cltq>();
         case x86_insn::X86_INS_JA:
             return create_instruction<instruction::ja>(insn, operands[0]);
         case x86_insn::X86_INS_JMP:
@@ -158,7 +160,8 @@ class context {
         {placeholder::value::VALUE_6, placeholder::value::VALUE_7},
         {placeholder::value::VALUE_7, placeholder::value::VALUE_8},
         {placeholder::value::VALUE_8, placeholder::value::VALUE_9},
-        {placeholder::value::VALUE_9, placeholder::value::NONE},
+        {placeholder::value::VALUE_9, placeholder::value::VALUE_10},
+        {placeholder::value::VALUE_10, placeholder::value::NONE},
     };
 
     utils::unordered_bimap<placeholder::reg, x86_reg> pending_registers_;
@@ -230,6 +233,11 @@ class context {
         pending_values_.insert({allocated_value, value});
 
         return allocated_value;
+    }
+
+    template <typename T>
+    T create_instruction() {
+        return T();
     }
 
     template <typename T>
@@ -316,6 +324,28 @@ class context {
         return operand::make_mem2(disp_value, base_reg.first, base_reg.second);
     }
 
+    std::optional<operand::base_ptr> create_operand_mem3(x86_op_mem& op, cs_insn& insn) {
+        auto disp_value_opt = allocate_value(op.disp);
+        if (!disp_value_opt.has_value()) {
+            return {};
+        }
+        auto disp_value = disp_value_opt.value();
+
+        auto index_reg_opt = get_register(op.index, insn);
+        if (!index_reg_opt.has_value()) {
+            return {};
+        }
+        auto index_reg = index_reg_opt.value();
+
+        auto scale_value_opt = allocate_value(static_cast<int64_t>(op.scale));
+        if (!scale_value_opt.has_value()) {
+            return {};
+        }
+        auto scale_value = scale_value_opt.value();
+
+        return operand::make_mem3(disp_value, index_reg.first, index_reg.second, scale_value);
+    }
+
     std::optional<operand::base_ptr> create_operand_mem4(x86_op_mem& op, cs_insn& insn) {
         auto disp_value_opt = allocate_value(op.disp);
         if (!disp_value_opt.has_value()) {
@@ -351,12 +381,16 @@ class context {
             return {};
         }
 
-        if (op.index != x86_reg::X86_REG_INVALID) {
-            return create_operand_mem4(op, insn);
+        if (op.base != x86_reg::X86_REG_INVALID && op.index == x86_reg::X86_REG_INVALID) {
+            return create_operand_mem2(op, insn);
         }
 
-        if (op.base != x86_reg::X86_REG_INVALID) {
-            return create_operand_mem2(op, insn);
+        if (op.base == x86_reg::X86_REG_INVALID && op.index != x86_reg::X86_REG_INVALID) {
+            return create_operand_mem3(op, insn);
+        }
+
+        if (op.base != x86_reg::X86_REG_INVALID && op.index != x86_reg::X86_REG_INVALID) {
+            return create_operand_mem4(op, insn);
         }
 
         std::cout << "[context::create_operand_mem] unsupported memory operand" << std::endl;

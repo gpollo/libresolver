@@ -77,6 +77,10 @@ std::optional<size> size_of(x86_reg reg) {
 }
 
 std::optional<std::vector<x86_reg>> written_of(const cs_insn& insn) {
+    if (insn.id == x86_insn::X86_INS_CDQE) {
+        return {{X86_REG_RAX}};
+    }
+
     if (insn.detail == nullptr) {
         return {};
     }

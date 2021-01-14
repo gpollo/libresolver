@@ -14,6 +14,7 @@ namespace operand {
 class reg;
 class imm;
 class mem2;
+class mem3;
 class mem4;
 
 class base {
@@ -23,6 +24,7 @@ class base {
     virtual bool operator==(const reg& other) const  = 0;
     virtual bool operator==(const imm& other) const  = 0;
     virtual bool operator==(const mem2& other) const = 0;
+    virtual bool operator==(const mem3& other) const = 0;
     virtual bool operator==(const mem4& other) const = 0;
     virtual size_t hash() const                      = 0;
     virtual std::string to_string() const            = 0;
@@ -45,6 +47,10 @@ class reg : public base {
     }
 
     bool operator==(const mem2& other) const override {
+        return false;
+    }
+
+    bool operator==(const mem3& other) const override {
         return false;
     }
 
@@ -85,6 +91,10 @@ class imm : public base {
         return false;
     }
 
+    bool operator==(const mem3& other) const override {
+        return false;
+    }
+
     bool operator==(const mem4& other) const override {
         return false;
     }
@@ -122,6 +132,10 @@ class mem2 : public base {
         return (base_ == other.base_) && (base_size_ == other.base_size_) && (disp_ == other.disp_);
     }
 
+    bool operator==(const mem3& other) const override {
+        return false;
+    }
+
     bool operator==(const mem4& other) const override {
         return false;
     }
@@ -137,6 +151,52 @@ class mem2 : public base {
    public:
     const placeholder::reg base_;
     const utils::registers::size base_size_;
+    const placeholder::value disp_;
+};
+
+class mem3 : public base {
+   public:
+    mem3(placeholder::value disp, placeholder::reg index, utils::registers::size index_size, placeholder::value scale)
+        : index_(index), index_size_(index_size), scale_(scale), disp_(disp) {}
+
+    bool operator==(const base& other) const override {
+        return (other == *this);
+    }
+
+    bool operator==(const reg& other) const override {
+        return false;
+    }
+
+    bool operator==(const imm& other) const override {
+        return false;
+    }
+
+    bool operator==(const mem2& other) const override {
+        return false;
+    }
+
+    bool operator==(const mem3& other) const override {
+        return (index_ == other.index_) && (index_size_ == other.index_size_) && (scale_ == other.scale_) &&
+               (disp_ == other.disp_);
+    }
+
+    bool operator==(const mem4& other) const override {
+        return false;
+    }
+
+    size_t hash() const override {
+        return utils::hash::combine(std::hash<placeholder::reg>{}(index_), index_size_, scale_, disp_);
+    }
+
+    std::string to_string() const override {
+        return std::to_string(disp_) + "(, " + std::to_string(index_) + std::to_string(index_size_) + ", " +
+               std::to_string(scale_) + ")";
+    }
+
+   public:
+    const placeholder::reg index_;
+    const utils::registers::size index_size_;
+    const placeholder::value scale_;
     const placeholder::value disp_;
 };
 
@@ -159,6 +219,10 @@ class mem4 : public base {
     }
 
     bool operator==(const mem2& other) const override {
+        return false;
+    }
+
+    bool operator==(const mem3& other) const override {
         return false;
     }
 
@@ -197,6 +261,7 @@ using base_ptr = std::shared_ptr<base>;
 using reg_ptr  = std::shared_ptr<reg>;
 using imm_ptr  = std::shared_ptr<imm>;
 using mem2_ptr = std::shared_ptr<mem2>;
+using mem3_ptr = std::shared_ptr<mem3>;
 using mem4_ptr = std::shared_ptr<mem4>;
 
 template <typename... Args>
@@ -212,6 +277,11 @@ imm_ptr make_imm(Args... args) {
 template <typename... Args>
 mem2_ptr make_mem2(Args... args) {
     return std::make_shared<mem2>(args...);
+}
+
+template <typename... Args>
+mem3_ptr make_mem3(Args... args) {
+    return std::make_shared<mem3>(args...);
 }
 
 template <typename... Args>

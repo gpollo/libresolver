@@ -26,6 +26,12 @@ class base {
 };
 
 template <x86_insn Insn>
+class zero_op : public base {
+   public:
+    zero_op() : base(Insn) {}
+};
+
+template <x86_insn Insn>
 class one_op : public base {
    public:
     template <typename T>
@@ -46,6 +52,7 @@ class two_ops : public base {
 
 using add    = instruction::two_ops<x86_insn::X86_INS_ADD>;
 using cmp    = instruction::two_ops<x86_insn::X86_INS_CMP>;
+using cltq   = instruction::zero_op<x86_insn::X86_INS_CDQE>;
 using ja     = instruction::one_op<x86_insn::X86_INS_JA>;
 using jmp    = instruction::one_op<x86_insn::X86_INS_JMP>;
 using lea    = instruction::two_ops<x86_insn::X86_INS_LEA>;

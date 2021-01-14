@@ -53,6 +53,8 @@ string to_string(libresolver::placeholder::value value) {
         return "VALUE_8";
     case libresolver::placeholder::value::VALUE_9:
         return "VALUE_9";
+    case libresolver::placeholder::value::VALUE_10:
+        return "VALUE_10";
     }
 
     return "(INVALID-VALUE)";

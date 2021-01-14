@@ -6,6 +6,7 @@
 #include <libresolver/cases/case_12.hpp>
 #include <libresolver/cases/case_13.hpp>
 #include <libresolver/cases/case_14.hpp>
+#include <libresolver/cases/case_15.hpp>
 #include <libresolver/cases/case_2.hpp>
 #include <libresolver/cases/case_3.hpp>
 #include <libresolver/cases/case_4.hpp>
@@ -103,6 +104,11 @@ int libresolver_x86_resolve(csh handle, cs_insn* insns, size_t insn_count, size_
 
     auto case_14 = std::make_shared<libresolver::cases::case_14>();
     if (!(tree.add(case_14->get_pattern(), case_14))) {
+        return -1;
+    }
+
+    auto case_15 = std::make_shared<libresolver::cases::case_15>();
+    if (!(tree.add(case_15->get_pattern(), case_15))) {
         return -1;
     }
 
