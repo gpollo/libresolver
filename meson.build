@@ -10,27 +10,11 @@ libcapstone_dep = dependency('capstone', required: true)
 # libresolver #
 ###############
 
-libresolver_include = include_directories('include')
+libresolver_includes = [
+    include_directories('include')
+]
 
-libresolver_find_include = '`find include -type f -iname \'*.hpp\'`'
-libresolver_find_source = '`find source -type f -iname \'*.cpp\'`'
-libresolver_find_tests = '`find tests -type f -iname \'*.cpp\'`'
-libresolver_find_format = libresolver_find_include + ' ' + libresolver_find_source + ' ' + libresolver_find_tests
-
-run_target('format',
-    command: [
-        'sh', '-c',
-        'clang-format --verbose -i ' + libresolver_find_format
-    ],
-)
-
-#########
-# tests #
-#########
-
-tests_include = include_directories('tests')
-
-tests_source = [
+libresolver_sources = [
     'source/cases/case_1.cpp',
     'source/cases/case_2.cpp',
     'source/cases/case_3.cpp',
@@ -53,6 +37,53 @@ tests_source = [
     'source/memory.cpp',
     'source/utils/registers.cpp',
     'source/watch_list.cpp',
+]
+
+libresolver_deps = [
+    libcapstone_dep,
+]
+
+libresolver = shared_library(
+    'resolver', libresolver_sources,
+    include_directories: libresolver_includes,
+    dependencies: libresolver_deps,
+    cpp_args: ['-std=c++20', '-g'],
+    install: true,
+)
+
+###########
+# headers #
+###########
+
+install_headers('include/libresolver/porcelain.hpp', subdir: 'libresolver')
+
+##########
+# format #
+##########
+
+libresolver_find_include = '`find include -type f -iname \'*.hpp\'`'
+libresolver_find_source = '`find source -type f -iname \'*.cpp\'`'
+libresolver_find_tests = '`find tests -type f -iname \'*.cpp\'`'
+libresolver_find_format = libresolver_find_include + ' ' + libresolver_find_source + ' ' + libresolver_find_tests
+
+run_target('format',
+    command: [
+        'sh', '-c',
+        'clang-format --verbose -i ' + libresolver_find_format
+    ],
+)
+
+#########
+# check #
+#########
+
+tests_includes = [
+    libresolver_includes,
+    include_directories('tests')
+]
+
+tests_sources = [
+    libresolver_sources,
     'tests/cases/case_1.cpp',
     'tests/cases/case_2.cpp',
     'tests/cases/case_3.cpp',
@@ -80,8 +111,8 @@ tests_deps = [
 ]
 
 tests_executable = executable(
-    'tests', [tests_source],
-    include_directories: [tests_include, libresolver_include],
+    'tests', tests_sources,
+    include_directories: tests_includes,
     dependencies: tests_deps,
     cpp_args: ['-std=c++20', '-g'],
 )
