@@ -16,6 +16,16 @@
  *
  * Check if different actions should be an error. It probably
  * shouldn't. Search for "used by other pattern" in the cases.
+ *
+ * Does register size really matter? Do we need a pattern for
+ * byte, word, double-words and quad-words? Or a catch-all pattern
+ * is good enough?
+ *
+ * We use AT&T syntax. Make sure the code base follows that.
+ *
+ * The instruction `cltq` sign-extend %eax into %rax. Check if there
+ * is equivalent instructions for other register. If so, they should
+ * match the same instruction in the pattern tree.
  */
 
 expression get_basic_1() {
