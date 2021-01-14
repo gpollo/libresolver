@@ -21,6 +21,26 @@
 #include <libresolver/porcelain.hpp>
 #include <tests/pattern/tree.hpp>
 
+template <typename Case, typename Next = void, typename... Args>
+static inline bool add_cases(libresolver::pattern::tree& tree, std::true_type /* is_last */) {
+    return true;
+}
+
+template <typename Case, typename Next = void, typename... Args>
+static inline bool add_cases(libresolver::pattern::tree& tree, std::false_type /* is_last */) {
+    auto new_case = std::make_shared<Case>();
+    if (!(tree.add(new_case->get_pattern(), new_case))) {
+        return false;
+    }
+
+    return add_cases<Next, Args...>(tree, std::is_void<Next>());
+}
+
+template <typename Next = void, typename... Args>
+static inline bool add_cases(libresolver::pattern::tree& tree) {
+    return add_cases<Next, Args...>(tree, std::is_void<Next>());
+}
+
 int libresolver_x86_resolve(csh handle, cs_insn* insns, size_t insn_count, size_t index, uint64_t** results,
                             void* memory) {
     std::vector<std::reference_wrapper<cs_insn>> insns_vec;
@@ -38,85 +58,16 @@ int libresolver_x86_resolve(csh handle, cs_insn* insns, size_t insn_count, size_
 
     libresolver::pattern::tree tree;
 
-    auto case_1 = std::make_shared<libresolver::cases::case_1>();
-    if (!(tree.add(case_1->get_pattern(), case_1))) {
+    bool success = add_cases<libresolver::cases::case_1, libresolver::cases::case_2, libresolver::cases::case_3,
+                             libresolver::cases::case_4, libresolver::cases::case_5, libresolver::cases::case_6,
+                             libresolver::cases::case_7, libresolver::cases::case_8, libresolver::cases::case_9,
+                             libresolver::cases::case_10, libresolver::cases::case_11, libresolver::cases::case_12,
+                             libresolver::cases::case_13, libresolver::cases::case_14, libresolver::cases::case_15,
+                             libresolver::cases::case_16>(tree);
+    if (!success) {
         return -1;
     }
 
-    auto case_2 = std::make_shared<libresolver::cases::case_2>();
-    if (!(tree.add(case_2->get_pattern(), case_2))) {
-        return -1;
-    }
-
-    auto case_3 = std::make_shared<libresolver::cases::case_3>();
-    if (!(tree.add(case_3->get_pattern(), case_3))) {
-        return -1;
-    }
-
-    auto case_4 = std::make_shared<libresolver::cases::case_4>();
-    if (!(tree.add(case_4->get_pattern(), case_4))) {
-        return -1;
-    }
-
-    auto case_5 = std::make_shared<libresolver::cases::case_5>();
-    if (!(tree.add(case_5->get_pattern(), case_5))) {
-        return -1;
-    }
-
-    auto case_6 = std::make_shared<libresolver::cases::case_6>();
-    if (!(tree.add(case_6->get_pattern(), case_6))) {
-        return -1;
-    }
-
-    auto case_7 = std::make_shared<libresolver::cases::case_7>();
-    if (!(tree.add(case_7->get_pattern(), case_7))) {
-        return -1;
-    }
-
-    auto case_8 = std::make_shared<libresolver::cases::case_8>();
-    if (!(tree.add(case_8->get_pattern(), case_8))) {
-        return -1;
-    }
-
-    auto case_9 = std::make_shared<libresolver::cases::case_9>();
-    if (!(tree.add(case_9->get_pattern(), case_9))) {
-        return -1;
-    }
-
-    auto case_10 = std::make_shared<libresolver::cases::case_10>();
-    if (!(tree.add(case_10->get_pattern(), case_10))) {
-        return -1;
-    }
-
-    auto case_11 = std::make_shared<libresolver::cases::case_11>();
-    if (!(tree.add(case_11->get_pattern(), case_11))) {
-        return -1;
-    }
-
-    auto case_12 = std::make_shared<libresolver::cases::case_12>();
-    if (!(tree.add(case_12->get_pattern(), case_12))) {
-        return -1;
-    }
-
-    auto case_13 = std::make_shared<libresolver::cases::case_13>();
-    if (!(tree.add(case_13->get_pattern(), case_13))) {
-        return -1;
-    }
-
-    auto case_14 = std::make_shared<libresolver::cases::case_14>();
-    if (!(tree.add(case_14->get_pattern(), case_14))) {
-        return -1;
-    }
-
-    auto case_15 = std::make_shared<libresolver::cases::case_15>();
-    if (!(tree.add(case_15->get_pattern(), case_15))) {
-        return -1;
-    }
-
-    auto case_16 = std::make_shared<libresolver::cases::case_16>();
-    if (!(tree.add(case_16->get_pattern(), case_16))) {
-        return -1;
-    }
 
     libresolver::pattern::matcher matcher(tree, true);
     auto matches = matcher.match_instructions(insns_vec);
