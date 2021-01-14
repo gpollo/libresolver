@@ -139,13 +139,22 @@ main:
     #jmpq *%rax
 
     # case 15
-    cmpl   $6,40(%rbp)
-    ja     30
-    mov    40(%rbp),%eax
-    lea    0x0(,%rax,4),%rdx
-    lea    20(%rip),%rax
-    mov    100(%rdx,%rax,1),%eax
-    cltq
-    lea    10(%rip),%rdx
-    add    %rdx,%rax
+    #cmpl   $6,40(%rbp)
+    #ja     30
+    #mov    40(%rbp),%eax
+    #lea    0x0(,%rax,4),%rdx
+    #lea    20(%rip),%rax
+    #mov    100(%rdx,%rax,1),%eax
+    #cltq
+    #lea    10(%rip),%rdx
+    #add    %rdx,%rax
+    #jmpq   *%rax
+
+    # case 16
+    cmp    $5,%edx
+    ja     10
+    mov    %edx,%ecx
+    lea    1000(%rip),%rbx
+    movslq 100(%rbx,%rcx,4),%rax
+    add    %rbx,%rax
     jmpq   *%rax

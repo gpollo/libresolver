@@ -17,8 +17,6 @@ TEST_CASE("pattern tree should match pattern case 15", "[libresolver::cases::cas
     libresolver::pattern::matcher matcher(tree);
     const libresolver::context& context = matcher.get_context();
 
-    std::cout << std::to_string(tree) << std::endl;
-
     SECTION("example 1") {
         const unsigned char bytes[] =
             "\x83\x7d\x28\x06"                 /* cmpl $6,40(%rbp) */
