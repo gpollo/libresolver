@@ -112,7 +112,7 @@ int libresolver_x86_resolve(csh handle, cs_insn* insns, size_t insn_count, size_
         return -1;
     }
 
-    libresolver::pattern::matcher matcher(tree);
+    libresolver::pattern::matcher matcher(tree, true);
     auto matches = matcher.match_instructions(insns_vec);
     if (matches.size() == 0) {
         return -1;

@@ -15,6 +15,7 @@ namespace libresolver {
 
 class context {
    public:
+    bool using_intel_syntax_ = false;
     utils::unordered_bimap<placeholder::reg, x86_reg> allocated_registers_;
     std::unordered_map<placeholder::value, int64_t> allocated_values_;
     std::vector<uint64_t> allocated_rip_values_;
@@ -252,12 +253,25 @@ class context {
 
     template <typename T>
     std::optional<T> create_instruction(cs_insn& insn, cs_x86_op& op1, cs_x86_op& op2) {
-        auto op1_opt = create_operand(op1, insn);
+        std::optional<operand::base_ptr> op1_opt;
+        std::optional<operand::base_ptr> op2_opt;
+
+        if (using_intel_syntax_) {
+            op1_opt = create_operand(op2, insn);
+        } else {
+            op1_opt = create_operand(op1, insn);
+        }
+
         if (!op1_opt.has_value()) {
             return {};
         }
 
-        auto op2_opt = create_operand(op2, insn);
+        if (using_intel_syntax_) {
+            op2_opt = create_operand(op1, insn);
+        } else {
+            op2_opt = create_operand(op2, insn);
+        }
+
         if (!op2_opt.has_value()) {
             return {};
         }

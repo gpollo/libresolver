@@ -15,7 +15,9 @@ namespace libresolver::pattern {
 
 class matcher {
    public:
-    matcher(const tree& tree) : tree_(tree){};
+    matcher(const tree& tree, bool using_intel_syntax = false) : tree_(tree) {
+        context_.using_intel_syntax_ = using_intel_syntax;
+    };
 
     const context& get_context() const {
         return context_;
