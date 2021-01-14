@@ -43,6 +43,8 @@ static inline bool add_cases(libresolver::pattern::tree& tree) {
 
 int libresolver_x86_resolve(csh handle, cs_insn* insns, size_t insn_count, size_t index, uint64_t** results,
                             void* memory) {
+    *results = nullptr;
+
     std::vector<std::reference_wrapper<cs_insn>> insns_vec;
     for (int i = index; i >= 0; i--) {
         insns_vec.push_back(insns[i]);
@@ -65,19 +67,18 @@ int libresolver_x86_resolve(csh handle, cs_insn* insns, size_t insn_count, size_
                              libresolver::cases::case_13, libresolver::cases::case_14, libresolver::cases::case_15,
                              libresolver::cases::case_16>(tree);
     if (!success) {
-        return -1;
+        return 0;
     }
-
 
     libresolver::pattern::matcher matcher(tree, true);
     auto matches = matcher.match_instructions(insns_vec);
     if (matches.size() == 0) {
-        return -1;
+        return 0;
     }
 
     auto values = matches[0]->evaluate(matcher.get_context(), *memory_interface);
     if (values.size() == 0) {
-        return -1;
+        return 0;
     }
 
     *results = (uint64_t*)malloc(values.size() * sizeof(uint64_t));
