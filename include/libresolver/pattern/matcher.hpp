@@ -28,12 +28,17 @@ class matcher {
         context_.reset();
         watch_list_.reset();
         watch_list_.add_instruction(x86_insn::X86_INS_JMP);
-        /* TODO: remove instruction when it is matched */
+        bool first_matched = false;
 
         node* current_node = nullptr;
         for (auto& insn : insns) {
             if (!watch_list_.matches(insn)) {
                 continue;
+            }
+
+            if (!first_matched) {
+                watch_list_.remove_instruction(x86_insn::X86_INS_JMP);
+                first_matched = true;
             }
 
             auto instruction_opt = context_.build_instruction(insn);
