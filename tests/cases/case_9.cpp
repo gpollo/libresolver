@@ -28,7 +28,8 @@ TEST_CASE("pattern tree should match pattern case 9", "[libresolver::cases::case
             "\xff\xe0";                    /* jmpq   *%rax */
         const size_t bytes_len = sizeof(bytes) - 1;
 
-        memory.i32_ = {{1107, 10}, {1111, 20}, {1115, 30}, {1119, 40}, {1123, 50}, {1127, 60}, {1131, 70}, {1135, 80}};
+        memory.i32_ = {{1107, 10}, {1111, 20}, {1115, 30}, {1119, 40}, {1123, 50},
+                       {1127, 60}, {1131, 70}, {1135, 80}, {1139, 90}};
 
         auto instructions = engine.disassemble(bytes, bytes_len, 0, 7);
         auto matches      = matcher.match_instructions(instructions->get());
@@ -55,7 +56,7 @@ TEST_CASE("pattern tree should match pattern case 9", "[libresolver::cases::case
         REQUIRE(context.get(value::VALUE_9).value_or(-1) == -1);
         REQUIRE(context.get(value::VALUE_10).value_or(-1) == -1);
         REQUIRE(context.get_rip(0).value_or(-1) == 7);
-        REQUIRE(values.size() == 8);
+        REQUIRE(values.size() == 9);
         REQUIRE(values.contains(1017));
         REQUIRE(values.contains(1027));
         REQUIRE(values.contains(1037));
@@ -64,6 +65,7 @@ TEST_CASE("pattern tree should match pattern case 9", "[libresolver::cases::case
         REQUIRE(values.contains(1067));
         REQUIRE(values.contains(1077));
         REQUIRE(values.contains(1087));
+        REQUIRE(values.contains(1097));
     }
 }
 

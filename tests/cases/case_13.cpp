@@ -28,7 +28,7 @@ TEST_CASE("pattern tree should match pattern case 13", "[libresolver::cases::cas
             "\xff\xe0";                    /* jmpq   *%rax */
         const size_t bytes_len = sizeof(bytes) - 1;
 
-        memory.i32_ = {{1120, 10}, {1124, 20}, {1128, 30}, {1132, 40}, {1136, 50}, {1140, 60}};
+        memory.i32_ = {{1120, 10}, {1124, 20}, {1128, 30}, {1132, 40}, {1136, 50}, {1140, 60}, {1144, 70}};
 
         auto instructions = engine.disassemble(bytes, bytes_len, 0, 7);
         auto matches      = matcher.match_instructions(instructions->get());
@@ -55,13 +55,14 @@ TEST_CASE("pattern tree should match pattern case 13", "[libresolver::cases::cas
         REQUIRE(context.get(value::VALUE_9).value_or(-1) == -1);
         REQUIRE(context.get(value::VALUE_10).value_or(-1) == -1);
         REQUIRE(context.get_rip(0).value_or(-1) == 20);
-        REQUIRE(values.size() == 6);
+        REQUIRE(values.size() == 7);
         REQUIRE(values.contains(1030));
         REQUIRE(values.contains(1040));
         REQUIRE(values.contains(1050));
         REQUIRE(values.contains(1060));
         REQUIRE(values.contains(1070));
         REQUIRE(values.contains(1080));
+        REQUIRE(values.contains(1090));
     }
 
     /* TODO: add a case where k4 != k7 */

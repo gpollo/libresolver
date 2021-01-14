@@ -28,7 +28,7 @@ TEST_CASE("pattern tree should match pattern case 1", "[libresolver::cases::case
             "\xff\xe0";                    /* #6 jmpq   *%rax */
         const size_t bytes_len = sizeof(bytes) - 1;
 
-        memory.i32_ = {{{1355, 10}, {1359, 20}, {1363, 30}, {1367, 40}, {1371, 50}}};
+        memory.i32_ = {{{1355, 10}, {1359, 20}, {1363, 30}, {1367, 40}, {1371, 50}, {1375, 60}}};
 
         auto instructions = engine.disassemble(bytes, bytes_len, 0, 7);
         auto matches      = matcher.match_instructions(instructions->get());
@@ -55,12 +55,13 @@ TEST_CASE("pattern tree should match pattern case 1", "[libresolver::cases::case
         REQUIRE(context.get(value::VALUE_9).value_or(-1) == -1);
         REQUIRE(context.get(value::VALUE_10).value_or(-1) == -1);
         REQUIRE(context.get_rip(0).value_or(-1) == 18);
-        REQUIRE(values.size() == 5);
+        REQUIRE(values.size() == 6);
         REQUIRE(values.contains(1365));
         REQUIRE(values.contains(1375));
         REQUIRE(values.contains(1385));
         REQUIRE(values.contains(1395));
         REQUIRE(values.contains(1405));
+        REQUIRE(values.contains(1415));
     }
 
     SECTION("example 2") {
@@ -74,7 +75,8 @@ TEST_CASE("pattern tree should match pattern case 1", "[libresolver::cases::case
             "\xff\xe6";                    /* jmpq   *%rsi */
         const size_t bytes_len = sizeof(bytes) - 1;
 
-        memory.i32_ = {{{1355, 20}, {1359, 30}, {1363, 40}, {1367, 50}, {1371, 60}, {1375, 70}, {1379, 80}}};
+        memory.i32_ = {
+            {{1355, 20}, {1359, 30}, {1363, 40}, {1367, 50}, {1371, 60}, {1375, 70}, {1379, 80}, {1383, 90}}};
 
         auto instructions = engine.disassemble(bytes, bytes_len, 0, 7);
         auto matches      = matcher.match_instructions(instructions->get());
@@ -99,8 +101,9 @@ TEST_CASE("pattern tree should match pattern case 1", "[libresolver::cases::case
         REQUIRE(context.get(value::VALUE_7).value_or(-1) == -1);
         REQUIRE(context.get(value::VALUE_8).value_or(-1) == -1);
         REQUIRE(context.get(value::VALUE_9).value_or(-1) == -1);
+        REQUIRE(context.get(value::VALUE_10).value_or(-1) == -1);
         REQUIRE(context.get_rip(0).value_or(-1) == 18);
-        REQUIRE(values.size() == 7);
+        REQUIRE(values.size() == 8);
         REQUIRE(values.contains(1375));
         REQUIRE(values.contains(1385));
         REQUIRE(values.contains(1395));
@@ -108,6 +111,7 @@ TEST_CASE("pattern tree should match pattern case 1", "[libresolver::cases::case
         REQUIRE(values.contains(1415));
         REQUIRE(values.contains(1425));
         REQUIRE(values.contains(1435));
+        REQUIRE(values.contains(1445));
     }
 }
 

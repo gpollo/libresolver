@@ -29,7 +29,7 @@ TEST_CASE("pattern tree should match pattern case 11", "[libresolver::cases::cas
         const size_t bytes_len = sizeof(bytes) - 1;
 
         memory.i32_ = {{1115, 10}, {1119, 20}, {1123, 30}, {1127, 40}, {1131, 50},
-                       {1135, 60}, {1139, 70}, {1143, 80}, {1147, 90}};
+                       {1135, 60}, {1139, 70}, {1143, 80}, {1147, 90}, {1151, 100}};
 
         auto instructions = engine.disassemble(bytes, bytes_len, 0, 7);
         auto matches      = matcher.match_instructions(instructions->get());
@@ -56,7 +56,7 @@ TEST_CASE("pattern tree should match pattern case 11", "[libresolver::cases::cas
         REQUIRE(context.get(value::VALUE_9).value_or(-1) == -1);
         REQUIRE(context.get(value::VALUE_10).value_or(-1) == -1);
         REQUIRE(context.get_rip(0).value_or(-1) == 15);
-        REQUIRE(values.size() == 9);
+        REQUIRE(values.size() == 10);
         REQUIRE(values.contains(1025));
         REQUIRE(values.contains(1035));
         REQUIRE(values.contains(1045));
@@ -66,6 +66,7 @@ TEST_CASE("pattern tree should match pattern case 11", "[libresolver::cases::cas
         REQUIRE(values.contains(1085));
         REQUIRE(values.contains(1095));
         REQUIRE(values.contains(1105));
+        REQUIRE(values.contains(1115));
     }
 }
 

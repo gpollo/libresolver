@@ -84,7 +84,7 @@ std::unordered_set<uint64_t> case_10::evaluate(const context& context, const mem
     auto k5   = k5_opt.value();
 
     std::unordered_set<uint64_t> values;
-    for (unsigned int i = 0; i < k5; i++) {
+    for (unsigned int i = 0; i <= k5; i++) {
         auto mem_opt = memory.read_i32(k1 + (rip0 + k3) + k2 * i);
         if (!mem_opt.has_value()) {
             std::cerr << "[cases::case_10::evaluate] failed to read memory" << std::endl;
