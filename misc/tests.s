@@ -1,3 +1,6 @@
+# This file can be used for generating dummy instructions
+# for unit testing the patterns.
+#
 # To get instruction's bytes, execute the following commands.
 #
 # $ gcc main.s -g -o main
