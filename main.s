@@ -44,7 +44,7 @@ main:
     #jmpq   *%rax
 
     # case 4
-    #cmp    $8,%rcx
+    #cmp    $8,%ecx
     #ja     10
     #lea    1000(%rip),%rbx
     #movslq 100(%rbx,%rcx,4),%rax

@@ -58,7 +58,7 @@ pattern::tree::pattern case_4::get_pattern() const {
         }, {
             instruction::cmp(
                 operand::make_imm(value::VALUE_5),
-                operand::make_reg(reg::REG_3, size::QWORD)
+                operand::make_reg(reg::REG_3, size::DWORD)
             ), {
                 .ignore_regs_ = {reg::REG_3},
                 .ignore_insns_ = {X86_INS_CMP},
