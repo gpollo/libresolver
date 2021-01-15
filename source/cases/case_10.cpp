@@ -44,7 +44,7 @@ pattern::tree::pattern case_10::get_pattern() const {
                 operand::make_reg(reg::REG_2, size::QWORD)
             ), {
                 .ignore_regs_ = {reg::REG_2},
-                .track_insns_ = {X86_INS_JA},
+                .track_insns_ = {X86_INS_JA, X86_INS_JB /* used by other pattern*/ },
             }
         }, {
             instruction::ja(
