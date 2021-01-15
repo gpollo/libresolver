@@ -1,5 +1,6 @@
 #include <iostream>
 
+#include <libresolver/log.hpp>
 #include <libresolver/utils/registers.hpp>
 #include <libresolver/watch_list.hpp>
 
@@ -32,7 +33,7 @@ bool watch_list::matches(cs_insn& insn) const {
 bool watch_list::add_register(x86_reg reg) {
     auto regs_opt = utils::registers::group_of(reg);
     if (!regs_opt.has_value()) {
-        std::cerr << "[watch_list::add_register] failed to obtain register group" << std::endl;
+        ERR("failed to obtain register group");
         return false;
     }
 
@@ -46,7 +47,7 @@ bool watch_list::add_register(x86_reg reg) {
 bool watch_list::remove_register(x86_reg reg) {
     auto regs_opt = utils::registers::group_of(reg);
     if (!regs_opt.has_value()) {
-        std::cerr << "[watch_list::remove_register] failed to obtain register group" << std::endl;
+        ERR("failed to obtain register group");
         return false;
     }
 

@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 
+#include <libresolver/log.hpp>
 #include <libresolver/memory.hpp>
 
 namespace libresolver {
@@ -21,13 +22,15 @@ static inline std::optional<OutputType> read_debug(uint64_t addr, bool debug, co
     auto value_opt = read<OutputType>(addr);
 
     if (debug) {
-        std::cerr << "[libresolver::memory::read_debug::" << type << "] 0x" << std::hex << addr << " => ";
-
+        std::string result;
         if (value_opt.has_value()) {
-            std::cerr << std::dec << +value_opt.value() << std::endl;
+            result = std::to_string(+value_opt.value());
         } else {
-            std::cerr << std::dec << "failed" << std::endl;
+            result = "failed";
         }
+
+        LOG("(" << type << ") "
+                << "0x" << std::hex << addr << " => " << result);
     }
 
     return value_opt;

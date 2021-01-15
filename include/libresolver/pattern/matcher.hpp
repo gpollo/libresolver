@@ -7,6 +7,7 @@
 #include <vector>
 
 #include <libresolver/context.hpp>
+#include <libresolver/log.hpp>
 #include <libresolver/pattern/match.hpp>
 #include <libresolver/pattern/tree.hpp>
 #include <libresolver/watch_list.hpp>
@@ -43,12 +44,12 @@ class matcher {
 
             auto instruction_opt = context_.build_instruction(insn);
             if (!instruction_opt.has_value()) {
-                std::cerr << "[pattern::matcher::match_instructions] failed to build instruction" << std::endl;
+                ERR("failed to build instruction");
                 return {};
             }
             auto instruction = instruction_opt.value();
 
-            std::cout << "processing " << std::to_string(instruction) << std::endl;
+            LOG("processing " << std::to_string(instruction));
 
             std::optional<std::reference_wrapper<node>> node_opt;
             if (current_node == nullptr) {
@@ -58,8 +59,8 @@ class matcher {
             }
 
             if (!node_opt.has_value()) {
-                std::cerr << "[pattern::matcher::match_instructions] instruction didn't match" << std::endl;
-                std::cerr << "[pattern::matcher::match_instructions] -> " << std::to_string(instruction) << std::endl;
+                ERR("instruction didn't match");
+                ERR("-> " << std::to_string(instruction));
                 return {};
             }
             current_node = &node_opt.value().get();
@@ -84,8 +85,7 @@ class matcher {
         for (auto placeholder_reg : actions.track_regs_) {
             auto reg_opt = context_.get(placeholder_reg);
             if (!reg_opt.has_value()) {
-                std::cerr << "[pattern::matcher::update_watch_list] expected placeholder `"
-                          << std::to_string(placeholder_reg) << "` to have been set" << std::endl;
+                ERR("expected placeholder `" << std::to_string(placeholder_reg) << "` to have been set");
                 continue;
             }
 
@@ -95,8 +95,7 @@ class matcher {
         for (auto placeholder_reg : actions.ignore_regs_) {
             auto reg_opt = context_.get(placeholder_reg);
             if (!reg_opt.has_value()) {
-                std::cerr << "[pattern::matcher::update_watch_list] expected placeholder `"
-                          << std::to_string(placeholder_reg) << "` to have been set" << std::endl;
+                ERR("expected placeholder `" << std::to_string(placeholder_reg) << "` to have been set");
                 continue;
             }
 

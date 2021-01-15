@@ -1,4 +1,5 @@
 #include <libresolver/cases/case_1.hpp>
+#include <libresolver/log.hpp>
 #include <libresolver/utils/optional.hpp>
 
 namespace libresolver::cases {
@@ -88,7 +89,7 @@ std::unordered_set<uint64_t> case_1::evaluate(const context& context, const memo
     auto k5_opt   = context.get(value::VALUE_5);
 
     if (!utils::optional::all_value(rip0_opt, k1_opt, k2_opt, k3_opt, k5_opt)) {
-        std::cerr << "[cases::case_1::evaluate] missing matched values" << std::endl;
+        ERR("missing matched values");
         return {};
     }
 
@@ -102,7 +103,7 @@ std::unordered_set<uint64_t> case_1::evaluate(const context& context, const memo
     for (unsigned int i = 0; i <= k5; i++) {
         auto mem_opt = memory.read_i32(k1 + (rip0 + k3) + k2 * i);
         if (!mem_opt.has_value()) {
-            std::cerr << "[cases::case_1::evaluate] failed to read memory" << std::endl;
+            ERR("failed to read memory");
             return {};
         }
 

@@ -1,4 +1,5 @@
 #include <libresolver/cases/case_8.hpp>
+#include <libresolver/log.hpp>
 #include <libresolver/utils/optional.hpp>
 
 namespace libresolver::cases {
@@ -92,7 +93,7 @@ std::unordered_set<uint64_t> case_8::evaluate(const context& context, const memo
     auto k7_opt   = context.get(value::VALUE_7);
 
     if (!utils::optional::all_value(rip0_opt, rip1_opt, rip2_opt, k1_opt, k2_opt, k3_opt, k4_opt, k6_opt, k7_opt)) {
-        std::cerr << "[cases::case_8::evaluate] missing matched values" << std::endl;
+        ERR("missing matched values");
         return {};
     }
 
@@ -107,7 +108,7 @@ std::unordered_set<uint64_t> case_8::evaluate(const context& context, const memo
     auto k7   = k7_opt.value();
 
     if (rip1 + k4 != rip2 + k7) {
-        std::cerr << "[cases::case_8::evaluate] rip1 + k4 is not equal to rip2 + k7" << std::endl;
+        ERR("rip1 + k4 is not equal to rip2 + k7");
         return {};
     }
 
@@ -115,7 +116,7 @@ std::unordered_set<uint64_t> case_8::evaluate(const context& context, const memo
     for (unsigned int i = 0; i <= k6; i++) {
         auto mem_opt = memory.read_i32(k1 + (rip0 + k3) + k2 * i);
         if (!mem_opt.has_value()) {
-            std::cerr << "[cases::case_8::evaluate] failed to read memory" << std::endl;
+            ERR("failed to read memory");
             return {};
         }
 

@@ -7,6 +7,7 @@
 #include <unordered_map>
 
 #include <libresolver/instruction.hpp>
+#include <libresolver/log.hpp>
 #include <libresolver/placeholder.hpp>
 #include <libresolver/utils/registers.hpp>
 #include <libresolver/utils/unordered_bimap.hpp>
@@ -67,13 +68,13 @@ class context {
 
     std::optional<instruction::base> build_instruction(cs_insn& insn) {
         if (!has_last_instruction_been_validated()) {
-            std::cerr << "[context::build_instruction] last instruction has not been validated" << std::endl;
+            ERR("last instruction has not been validated");
             return {};
         }
 
         x86_insn id = static_cast<x86_insn>(insn.id);
         if (insn.detail == nullptr) {
-            std::cerr << "[context::build_instruction] instruction details are missing" << std::endl;
+            ERR("instruction details are missing");
             return {};
         }
 
@@ -102,7 +103,7 @@ class context {
         case x86_insn::X86_INS_MOVSXD:
             return create_instruction<instruction::movsxd>(insn, operands[0], operands[1]);
         default:
-            std::cerr << "[context::build_instruction] unknown instruction id `" << id << "`" << std::endl;
+            ERR("unknown instruction id `" << id << "`");
             return {};
         }
     }
@@ -179,7 +180,7 @@ class context {
     std::optional<placeholder::reg> allocate_register(x86_reg base_reg) {
         auto reg_opt = utils::registers::full_of(base_reg);
         if (!reg_opt.has_value()) {
-            std::cout << "[context::allocate_register] unknown register `" << base_reg << "`" << std::endl;
+            ERR("unknown register `" << base_reg << "`");
             return {};
         }
         auto reg = reg_opt.value();
@@ -195,7 +196,7 @@ class context {
         auto allocated_register = pending_current_register_;
 
         if (!next_register_.contains(pending_current_register_)) {
-            std::cout << "[context::allocate_register] no more register left to allocate" << std::endl;
+            ERR("no more register left to allocate");
             return {};
         }
 
@@ -207,12 +208,12 @@ class context {
 
     std::optional<placeholder::value> allocate_value(uint64_t value) {
         if (value > std::numeric_limits<int64_t>::max()) {
-            std::cout << "[context::allocate_value] value doesn't fit in std::int64_t" << std::endl;
+            ERR("value doesn't fit in std::int64_t");
             return {};
         }
 
         if (!next_value_.contains(pending_current_value_)) {
-            std::cout << "[context::allocate_register] no more value left to allocate" << std::endl;
+            ERR("no more value left to allocate");
             return {};
         }
 
@@ -226,7 +227,7 @@ class context {
 
     std::optional<placeholder::value> allocate_value(int64_t value) {
         if (!next_value_.contains(pending_current_value_)) {
-            std::cout << "[context::allocate_register] no more value left to allocate" << std::endl;
+            ERR("no more value left to allocate");
             return {};
         }
 
@@ -393,7 +394,7 @@ class context {
 
     std::optional<operand::base_ptr> create_operand_mem(x86_op_mem& op, cs_insn& insn) {
         if (op.segment != x86_reg::X86_REG_INVALID) {
-            std::cout << "[context::create_operand_mem] unsupported segment register" << std::endl;
+            ERR("unsupported segment register");
             return {};
         }
 
@@ -409,7 +410,7 @@ class context {
             return create_operand_mem4(op, insn);
         }
 
-        std::cout << "[context::create_operand_mem] unsupported memory operand" << std::endl;
+        ERR("unsupported memory operand");
         return {};
     }
 

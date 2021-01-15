@@ -1,5 +1,6 @@
 #include <stack>
 
+#include <libresolver/log.hpp>
 #include <libresolver/pattern/tree.hpp>
 
 namespace libresolver::pattern {
@@ -9,25 +10,25 @@ bool tree::add(const tree::pattern& pattern, const std::shared_ptr<match> match)
 
     for (const auto& [instruction, actions] : pattern) {
         if (!current_node->insert(instruction, actions)) {
-            std::cerr << "[pattern::tree::add] failed to insert new node" << std::endl;
+            ERR("failed to insert new node");
             return false;
         }
 
         auto existing_node = current_node->get(instruction);
         if (!existing_node.has_value()) {
-            std::cerr << "[pattern::tree::add] failed to get existing node" << std::endl;
+            ERR("failed to get existing node");
             return false;
         }
 
         current_node = &existing_node.value().get();
         if (current_node == nullptr) {
-            std::cerr << "[pattern::tree::add] current node is null" << std::endl;
+            ERR("current node is null");
             return false;
         }
     }
 
     if (!current_node->insert(match)) {
-        std::cerr << "[pattern::tree::add] failed to insert match to node" << std::endl;
+        ERR("failed to insert match to node");
         return false;
     }
 
@@ -52,7 +53,7 @@ string to_string(const libresolver::pattern::tree& tree) {
     for (auto child_instruction : tree.get_root().get_child_instructions()) {
         auto child_node_opt = tree.get_root().get(child_instruction);
         if (!child_node_opt.has_value()) {
-            std::cerr << "[std::to_string] failed to obtain node" << std::endl;
+            ERR("failed to obtain node");
             return "";
         }
 
@@ -74,7 +75,7 @@ string to_string(const libresolver::pattern::tree& tree) {
         for (auto child_instruction : node.get().get_child_instructions()) {
             auto child_node_opt = node.get().get(child_instruction);
             if (!child_node_opt.has_value()) {
-                std::cerr << "[std::to_string] failed to obtain node" << std::endl;
+                ERR("failed to obtain node");
                 return "";
             }
 

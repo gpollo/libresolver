@@ -9,6 +9,7 @@
 #include <vector>
 
 #include <libresolver/instruction.hpp>
+#include <libresolver/log.hpp>
 #include <libresolver/pattern/actions.hpp>
 #include <libresolver/pattern/match.hpp>
 #include <libresolver/placeholder.hpp>
@@ -31,18 +32,17 @@ class node {
 
     bool insert(const instruction::base& instruction, const actions& actions) {
         if (matches_.size() != 0) {
-            std::cerr << "[pattern::node::insert] node already contains matches" << std::endl;
+            ERR("node already contains matches");
             return false;
         }
 
         if (childs_->contains(instruction)) {
             const auto& current_node = childs_->at(instruction);
             if (current_node.get_actions() != actions) {
-                std::cerr << "[pattern::node::insert] current node actions are different" << std::endl;
-                std::cerr << "[pattern::node::insert] instruction: " << std::to_string(instruction) << std::endl;
-                std::cerr << "[pattern::node::insert]    old actions: " << std::to_string(current_node.get_actions())
-                          << std::endl;
-                std::cerr << "[pattern::node::insert]    new actions: " << std::to_string(actions) << std::endl;
+                ERR("current node actions are different");
+                ERR("instruction: " << std::to_string(instruction));
+                ERR("   old actions: " << std::to_string(current_node.get_actions()));
+                ERR("   new actions: " << std::to_string(actions));
                 return false;
             }
         } else {
@@ -54,7 +54,7 @@ class node {
 
     bool insert(const std::shared_ptr<match> match) {
         if (childs_->size() != 0) {
-            std::cerr << "[pattern::node::insert] node already contains children" << std::endl;
+            ERR("node already contains children");
             return false;
         }
 

@@ -4,7 +4,8 @@
 #include <iostream>
 #include <unordered_map>
 
-#include "libresolver/memory.hpp"
+#include <libresolver/memory.hpp>
+#include <libresolver/log.hpp>
 
 namespace tests::dummy {
 
@@ -38,13 +39,14 @@ public:
         auto value_opt = read(addr, mem);
 
         if (debug_) {
-            std::cerr << "[tests::dummy::memory::read_debug::" << type << "] 0x" << std::hex << addr << " => ";
-            
+            std::string result;
             if (value_opt.has_value()) {
-                std::cerr << std::dec << +value_opt.value() << std::endl;
+                result = std::to_string(+value_opt.value());
             } else {
-                std::cerr << std::dec << "failed" << std::endl;
+                result = "failed";
             }
+            
+            LOG("(" << type << ") " << "0x" << std::hex << addr << " => " << result);
         }
 
         return value_opt;

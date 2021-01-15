@@ -1,4 +1,5 @@
 project('libresolver', ['cpp'])
+add_global_arguments('-DLIBRESOLVER_BUILD', language : 'cpp')
 
 ################
 # dependencies #
