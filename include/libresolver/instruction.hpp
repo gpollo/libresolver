@@ -54,6 +54,7 @@ using add    = instruction::two_ops<x86_insn::X86_INS_ADD>;
 using cmp    = instruction::two_ops<x86_insn::X86_INS_CMP>;
 using cltq   = instruction::zero_op<x86_insn::X86_INS_CDQE>;
 using ja     = instruction::one_op<x86_insn::X86_INS_JA>;
+using jb     = instruction::one_op<x86_insn::X86_INS_JB>;
 using jmp    = instruction::one_op<x86_insn::X86_INS_JMP>;
 using lea    = instruction::two_ops<x86_insn::X86_INS_LEA>;
 using mov    = instruction::two_ops<x86_insn::X86_INS_MOV>;

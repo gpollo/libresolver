@@ -89,6 +89,8 @@ class context {
             return create_instruction<instruction::cltq>();
         case x86_insn::X86_INS_JA:
             return create_instruction<instruction::ja>(insn, operands[0]);
+        case x86_insn::X86_INS_JB:
+            return create_instruction<instruction::jb>(insn, operands[0]);
         case x86_insn::X86_INS_JMP:
             return create_instruction<instruction::jmp>(insn, operands[0]);
         case x86_insn::X86_INS_LEA:

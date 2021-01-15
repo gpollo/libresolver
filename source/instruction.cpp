@@ -30,6 +30,8 @@ string to_string_insn(x86_insn insn) {
         return "cltq";
     case x86_insn::X86_INS_JA:
         return "ja";
+    case x86_insn::X86_INS_JB:
+        return "jb";
     case x86_insn::X86_INS_JMP:
         return "jmp";
     case x86_insn::X86_INS_LEA:
