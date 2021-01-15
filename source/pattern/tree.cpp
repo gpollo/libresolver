@@ -86,7 +86,7 @@ string to_string(const libresolver::pattern::tree& tree) {
                 str.append("  ");
             }
 
-            str.append("[match]\n");
+            str.append("[" + match->get_name() + "]\n");
         }
     }
 

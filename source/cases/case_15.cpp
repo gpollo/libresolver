@@ -97,6 +97,10 @@ pattern::tree::pattern case_15::get_pattern() const {
     };
 }
 
+std::string case_15::get_name() const {
+    return "case-15";
+}
+
 std::unordered_set<uint64_t> case_15::evaluate(const context& context, const memory& memory) const {
     auto rip0_opt = context.get_rip(0);
     auto rip1_opt = context.get_rip(1);

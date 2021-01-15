@@ -12,8 +12,8 @@ namespace libresolver::pattern {
 
 class match {
    public:
-    virtual ~match() = default;
-
+    virtual ~match()                                                                                  = default;
+    virtual std::string get_name() const                                                              = 0;
     virtual std::unordered_set<uint64_t> evaluate(const context& context, const memory& memory) const = 0;
 };
 
