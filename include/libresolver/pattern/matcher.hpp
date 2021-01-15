@@ -66,6 +66,10 @@ class matcher {
 
             context_.validate_last_instruction();
             update_watch_list(current_node->get_actions());
+
+            if (current_node->get_matches().size() != 0) {
+                break;
+            }
         }
 
         return current_node->get_matches();
