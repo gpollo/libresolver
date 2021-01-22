@@ -109,12 +109,13 @@ std::unordered_set<uint64_t> case_15::evaluate(const context& context, const mem
     auto k2_opt   = context.get(value::VALUE_2);
     auto k3_opt   = context.get(value::VALUE_3);
     auto k4_opt   = context.get(value::VALUE_4);
+    auto k5_opt   = context.get(value::VALUE_5);
     auto k6_opt   = context.get(value::VALUE_6);
     auto k7_opt   = context.get(value::VALUE_7);
     auto k9_opt   = context.get(value::VALUE_9);
     auto k10_opt  = context.get(value::VALUE_10);
 
-    if (!utils::optional::all_value(rip0_opt, rip1_opt, k1_opt, k2_opt, k3_opt, k4_opt, k6_opt, k7_opt, k9_opt,
+    if (!utils::optional::all_value(rip0_opt, rip1_opt, k1_opt, k2_opt, k3_opt, k4_opt, k5_opt, k6_opt, k7_opt, k9_opt,
                                     k10_opt)) {
         ERR("missing matched values");
         return {};
@@ -126,6 +127,7 @@ std::unordered_set<uint64_t> case_15::evaluate(const context& context, const mem
     auto k2   = k2_opt.value();
     auto k3   = k3_opt.value();
     auto k4   = k4_opt.value();
+    auto k5   = k5_opt.value();
     auto k6   = k6_opt.value();
     auto k7   = k7_opt.value();
     auto k9   = k9_opt.value();
@@ -138,7 +140,7 @@ std::unordered_set<uint64_t> case_15::evaluate(const context& context, const mem
 
     std::unordered_set<uint64_t> values;
     for (unsigned int i = 0; i <= k9; i++) {
-        auto mem_opt = memory.read_i32(k2 + (k6 * i) + k3 * (rip1 + k4));
+        auto mem_opt = memory.read_i32(k2 + (k5 + k6 * i) + k3 * (rip1 + k4));
         if (!mem_opt.has_value()) {
             ERR("failed to read memory");
             return {};
