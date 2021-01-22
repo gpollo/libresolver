@@ -172,10 +172,22 @@ main:
     #jmpq   *%rax
 
     # case 18
-    cmp    $5,%ecx
+    #cmp    $5,%ecx
+    #ja     10
+    #lea    1000(%rip),%rbx
+    #mov    %ecx,%eax
+    #movslq 100(%rbx,%rax,4),%rax
+    #add    %rbx,%rax
+    #jmpq   *%rax
+
+    # case 19
+    cmp    $8,%eax
     ja     10
+    mov    %eax,%eax
+    lea    1000(,%rax,4),%rbx
+    lea    300(%rip),%rax
+    mov    100(%rbx,%rax,1),%eax
+    cltq
     lea    1000(%rip),%rbx
-    mov    %ecx,%eax
-    movslq 100(%rbx,%rax,4),%rax
     add    %rbx,%rax
     jmpq   *%rax

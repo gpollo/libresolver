@@ -8,6 +8,7 @@
 #include <libresolver/cases/case_16.hpp>
 #include <libresolver/cases/case_17.hpp>
 #include <libresolver/cases/case_18.hpp>
+#include <libresolver/cases/case_19.hpp>
 #include <libresolver/cases/case_2.hpp>
 #include <libresolver/cases/case_3.hpp>
 #include <libresolver/cases/case_4.hpp>
@@ -51,6 +52,7 @@ libresolver::pattern::tree create_tree() {
     add_pattern<libresolver::cases::case_16>(tree);
     add_pattern<libresolver::cases::case_17>(tree);
     add_pattern<libresolver::cases::case_18>(tree);
+    add_pattern<libresolver::cases::case_19>(tree);
 
     return tree;
 }
