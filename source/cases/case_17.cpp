@@ -34,7 +34,7 @@ pattern::tree::pattern case_17::get_pattern() const {
                 .track_regs_ = {reg::REG_2},
             }
         }, {
-            instruction::movsxd(
+            instruction::movslq(
                 operand::make_mem4(value::VALUE_1, reg::REG_2, size::QWORD, reg::REG_1, size::QWORD, value::VALUE_2),
                 operand::make_reg(reg::REG_1, size::QWORD)
             ), {

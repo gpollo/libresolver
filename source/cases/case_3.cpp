@@ -14,7 +14,7 @@ pattern::tree::pattern case_3::get_pattern() const {
      * ja     k5
      * mov    k4(%r3),%r1d
      * lea    k3(%rip),%r2
-     * movsxd k1(%r2,%r1,k2),%r1
+     * movslq k1(%r2,%r1,k2),%r1
      * add    %r2,%r1
      * jmpq   *%r1
      *
@@ -36,7 +36,7 @@ pattern::tree::pattern case_3::get_pattern() const {
                 .track_regs_ = {reg::REG_2},
             }
         }, {
-            instruction::movsxd(
+            instruction::movslq(
                 operand::make_mem4(value::VALUE_1, reg::REG_2, size::QWORD, reg::REG_1, size::QWORD, value::VALUE_2),
                 operand::make_reg(reg::REG_1, size::QWORD)
             ), {

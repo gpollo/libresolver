@@ -60,14 +60,14 @@ TEST_CASE("context should create instructions", "[libresolver::context]") {
     }
 
     SECTION("should generate libresolver::operand::mem4 correctly") {
-        auto insn_movsxd_opt = context.build_instruction(insns[5]);
-        REQUIRE(insn_movsxd_opt.has_value());
+        auto insn_movslq_opt = context.build_instruction(insns[5]);
+        REQUIRE(insn_movslq_opt.has_value());
         context.validate_last_instruction();
 
-        auto insn_movsxd = insn_movsxd_opt.value();
-        REQUIRE(insn_movsxd.get_insn() == x86_insn::X86_INS_MOVSXD);
-        REQUIRE(insn_movsxd.get_operands().size() == 2);
-        REQUIRE(*insn_movsxd.get_operands()[0] == libresolver::operand::mem4(value::VALUE_1, reg::REG_1, size::QWORD,
+        auto insn_movslq = insn_movslq_opt.value();
+        REQUIRE(insn_movslq.get_insn() == x86_insn::X86_INS_MOVSXD);
+        REQUIRE(insn_movslq.get_operands().size() == 2);
+        REQUIRE(*insn_movslq.get_operands()[0] == libresolver::operand::mem4(value::VALUE_1, reg::REG_1, size::QWORD,
                                                                              reg::REG_2, size::QWORD, value::VALUE_2));
 
         REQUIRE(context.allocated_values_.size() == 2);

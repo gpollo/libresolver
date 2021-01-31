@@ -42,7 +42,7 @@ main:
     #ja     10
     #mov    20(%rcx),%eax
     #lea    1000(%rip),%rbx
-    #movsxd 100(%rbx,%rax,4),%rax
+    #movslq 100(%rbx,%rax,4),%rax
     #add    %rbx,%rax
     #jmpq   *%rax
 

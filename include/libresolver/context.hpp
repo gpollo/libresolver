@@ -82,30 +82,30 @@ class context {
         cs_x86_op* operands = insn.detail->x86.operands;
 
         switch (id) {
-        case x86_insn::X86_INS_ADD:
+        case instruction::add::INSN:
             return create_instruction<instruction::add>(insn, operands[0], operands[1]);
-        case x86_insn::X86_INS_SUB:
+        case instruction::sub::INSN:
             return create_instruction<instruction::sub>(insn, operands[0], operands[1]);
-        case x86_insn::X86_INS_CMP:
+        case instruction::cmp::INSN:
             return create_instruction<instruction::cmp>(insn, operands[0], operands[1]);
-        case x86_insn::X86_INS_CDQE:
+        case instruction::cltq::INSN:
             return create_instruction<instruction::cltq>();
-        case x86_insn::X86_INS_JA:
+        case instruction::ja::INSN:
             return create_instruction<instruction::ja>(insn, operands[0]);
-        case x86_insn::X86_INS_JB:
+        case instruction::jb::INSN:
             return create_instruction<instruction::jb>(insn, operands[0]);
-        case x86_insn::X86_INS_JMP:
+        case instruction::jmp::INSN:
             return create_instruction<instruction::jmp>(insn, operands[0]);
-        case x86_insn::X86_INS_LEA:
+        case instruction::lea::INSN:
             return create_instruction<instruction::lea>(insn, operands[0], operands[1]);
-        case x86_insn::X86_INS_MOV:
+        case instruction::mov::INSN:
             return create_instruction<instruction::mov>(insn, operands[0], operands[1]);
-        case x86_insn::X86_INS_MOVZX:
-            return create_instruction<instruction::movzx>(insn, operands[0], operands[1]);
+        case instruction::movzbl::INSN:
+            return create_instruction<instruction::movzbl>(insn, operands[0], operands[1]);
         case instruction::movsbl::INSN:
             return create_instruction<instruction::movsbl>(insn, operands[0], operands[1]);
-        case x86_insn::X86_INS_MOVSXD:
-            return create_instruction<instruction::movsxd>(insn, operands[0], operands[1]);
+        case instruction::movslq::INSN:
+            return create_instruction<instruction::movslq>(insn, operands[0], operands[1]);
         default:
             ERR("unknown instruction id `" << id << "`");
             return {};

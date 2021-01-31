@@ -22,30 +22,30 @@ namespace std {
 
 string to_string_insn(x86_insn insn) {
     switch (insn) {
-    case x86_insn::X86_INS_ADD:
+    case libresolver::instruction::add::INSN:
         return "add";
-    case x86_insn::X86_INS_SUB:
+    case libresolver::instruction::sub::INSN:
         return "sub";
-    case x86_insn::X86_INS_CMP:
+    case libresolver::instruction::cmp::INSN:
         return "cmp";
-    case x86_insn::X86_INS_CDQE:
+    case libresolver::instruction::cltq::INSN:
         return "cltq";
-    case x86_insn::X86_INS_JA:
+    case libresolver::instruction::ja::INSN:
         return "ja";
-    case x86_insn::X86_INS_JB:
+    case libresolver::instruction::jb::INSN:
         return "jb";
-    case x86_insn::X86_INS_JMP:
+    case libresolver::instruction::jmp::INSN:
         return "jmp";
-    case x86_insn::X86_INS_LEA:
+    case libresolver::instruction::lea::INSN:
         return "lea";
-    case x86_insn::X86_INS_MOV:
+    case libresolver::instruction::mov::INSN:
         return "mov";
-    case x86_insn::X86_INS_MOVZX:
-        return "movzx";
+    case libresolver::instruction::movzbl::INSN:
+        return "movzbl";
     case libresolver::instruction::movsbl::INSN:
         return "movsbl";
-    case x86_insn::X86_INS_MOVSXD:
-        return "movsxd";
+    case libresolver::instruction::movslq::INSN:
+        return "movslq";
     default:
         break;
     }

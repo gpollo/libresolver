@@ -43,7 +43,7 @@ pattern::tree::pattern case_20::get_pattern() const {
                 .track_regs_ = {reg::REG_2},
             }
         }, {
-            instruction::movzx(
+            instruction::movzbl(
                 operand::make_mem4(value::VALUE_3, reg::REG_3, size::QWORD, reg::REG_1, size::QWORD, value::VALUE_4),
                 operand::make_reg(reg::REG_1, size::DWORD)
             ), {
