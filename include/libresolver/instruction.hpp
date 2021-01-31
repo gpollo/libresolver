@@ -28,12 +28,16 @@ class base {
 template <x86_insn Insn>
 class zero_op : public base {
    public:
+    static constexpr x86_insn INSN = Insn;
+
     zero_op() : base(Insn) {}
 };
 
 template <x86_insn Insn>
 class one_op : public base {
    public:
+    static constexpr x86_insn INSN = Insn;
+
     template <typename T>
     one_op(std::shared_ptr<T> op) : base(Insn) {
         operands_.push_back(op);
@@ -43,6 +47,8 @@ class one_op : public base {
 template <x86_insn Insn>
 class two_ops : public base {
    public:
+    static constexpr x86_insn INSN = Insn;
+
     template <typename T1, typename T2>
     two_ops(std::shared_ptr<T1> op1, std::shared_ptr<T2> op2) : base(Insn) {
         operands_.push_back(op1);
@@ -50,15 +56,19 @@ class two_ops : public base {
     }
 };
 
-using add    = instruction::two_ops<x86_insn::X86_INS_ADD>;
-using cmp    = instruction::two_ops<x86_insn::X86_INS_CMP>;
-using cltq   = instruction::zero_op<x86_insn::X86_INS_CDQE>;
-using ja     = instruction::one_op<x86_insn::X86_INS_JA>;
-using jb     = instruction::one_op<x86_insn::X86_INS_JB>;
-using jmp    = instruction::one_op<x86_insn::X86_INS_JMP>;
-using lea    = instruction::two_ops<x86_insn::X86_INS_LEA>;
-using mov    = instruction::two_ops<x86_insn::X86_INS_MOV>;
+using add  = instruction::two_ops<x86_insn::X86_INS_ADD>;
+using sub  = instruction::two_ops<x86_insn::X86_INS_SUB>;
+using cmp  = instruction::two_ops<x86_insn::X86_INS_CMP>;
+using cltq = instruction::zero_op<x86_insn::X86_INS_CDQE>;
+using ja   = instruction::one_op<x86_insn::X86_INS_JA>;
+using jb   = instruction::one_op<x86_insn::X86_INS_JB>;
+using jmp  = instruction::one_op<x86_insn::X86_INS_JMP>;
+using lea  = instruction::two_ops<x86_insn::X86_INS_LEA>;
+using mov  = instruction::two_ops<x86_insn::X86_INS_MOV>;
+/* TODO: rename to gas syntax */
 using movzx  = instruction::two_ops<x86_insn::X86_INS_MOVZX>;
+using movsbl = instruction::two_ops<x86_insn::X86_INS_MOVSX>;
+/* TODO: rename to gas syntax */
 using movsxd = instruction::two_ops<x86_insn::X86_INS_MOVSXD>;
 
 } /* namespace libresolver::instruction */

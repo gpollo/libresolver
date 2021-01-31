@@ -181,13 +181,26 @@ main:
     #jmpq   *%rax
 
     # case 19
-    cmp    $8,%eax
+    #cmp    $8,%eax
+    #ja     10
+    #mov    %eax,%eax
+    #lea    1000(,%rax,4),%rbx
+    #lea    300(%rip),%rax
+    #mov    100(%rbx,%rax,1),%eax
+    #cltq
+    #lea    1000(%rip),%rbx
+    #add    %rbx,%rax
+    #jmpq   *%rax
+
+    # case 20
+    lea    -20(%rbx),%eax
+    cmp    $30,%al
     ja     10
-    mov    %eax,%eax
-    lea    1000(,%rax,4),%rbx
-    lea    300(%rip),%rax
-    mov    100(%rbx,%rax,1),%eax
-    cltq
-    lea    1000(%rip),%rbx
-    add    %rbx,%rax
+    movsbl %bl,%eax
+    lea    2000(%rip),%rdi
+    lea    1000(%rip),%rcx
+    sub    $20,%eax
+    cltq   
+    movzbl (%rdi,%rax,1),%eax
+    mov    (%rcx,%rax,8),%rax
     jmpq   *%rax

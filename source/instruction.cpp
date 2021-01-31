@@ -24,6 +24,8 @@ string to_string_insn(x86_insn insn) {
     switch (insn) {
     case x86_insn::X86_INS_ADD:
         return "add";
+    case x86_insn::X86_INS_SUB:
+        return "sub";
     case x86_insn::X86_INS_CMP:
         return "cmp";
     case x86_insn::X86_INS_CDQE:
@@ -40,6 +42,8 @@ string to_string_insn(x86_insn insn) {
         return "mov";
     case x86_insn::X86_INS_MOVZX:
         return "movzx";
+    case libresolver::instruction::movsbl::INSN:
+        return "movsbl";
     case x86_insn::X86_INS_MOVSXD:
         return "movsxd";
     default:

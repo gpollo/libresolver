@@ -84,6 +84,8 @@ class context {
         switch (id) {
         case x86_insn::X86_INS_ADD:
             return create_instruction<instruction::add>(insn, operands[0], operands[1]);
+        case x86_insn::X86_INS_SUB:
+            return create_instruction<instruction::sub>(insn, operands[0], operands[1]);
         case x86_insn::X86_INS_CMP:
             return create_instruction<instruction::cmp>(insn, operands[0], operands[1]);
         case x86_insn::X86_INS_CDQE:
@@ -100,6 +102,8 @@ class context {
             return create_instruction<instruction::mov>(insn, operands[0], operands[1]);
         case x86_insn::X86_INS_MOVZX:
             return create_instruction<instruction::movzx>(insn, operands[0], operands[1]);
+        case instruction::movsbl::INSN:
+            return create_instruction<instruction::movsbl>(insn, operands[0], operands[1]);
         case x86_insn::X86_INS_MOVSXD:
             return create_instruction<instruction::movsxd>(insn, operands[0], operands[1]);
         default:
