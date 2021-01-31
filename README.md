@@ -20,3 +20,35 @@
   the instructions are.
     * See `cmd_replace @ git/builtin/replace.c`.
     * What happens if there is multiple jump sources?
+* Sometime, we are done using a matched register. This register,
+  for example %rax, should reused as another placeholder register.
+* All memory reads are assumed to be on a 64-bit system.
+    * This can be problematic for non position-independent executable
+      where the target address is stored directly in the jump table.
+      On 64-bit systems, each entries are 8 bytes. On 32-bit systems,
+      each entries are 4 bytes. Right now, we assume entries that are
+      8 bytes long.
+
+## Tail Optimized Indirect Call
+
+```
+94763500460964: jne 0x562fd8c85b70
+94763500460966: add rsp, 8
+94763500460970: mov rdx, r13
+94763500460973: mov rsi, rbp
+94763500460976: pop rbx
+94763500460977: pop rbp
+94763500460978: pop r12
+94763500460980: pop r13
+94763500460982: jmp rcx
+```
+
+```
+93912806519545: pop rbx
+93912806519546: pop rbp
+93912806519547: pop r12
+93912806519549: pop r13
+93912806519551: pop r14
+93912806519553: pop r15
+93912806519555: jmp rax
+```
