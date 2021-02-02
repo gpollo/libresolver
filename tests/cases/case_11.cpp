@@ -18,20 +18,18 @@ TEST_CASE("pattern tree should match pattern case 11", "[libresolver::cases::cas
     const libresolver::context& context = matcher.get_context();
 
     SECTION("example 1") {
-        const unsigned char bytes[] =
-            "\x3c\x09"                     /* cmp    $9,%al */
-            "\x0f\x87\xe9\xee\xff\xff"     /* ja     10 */
-            "\x48\x8d\x1d\xe8\x03\x00\x00" /* lea    1000(%rip),%rbx */
-            "\x0f\xb6\xc0"                 /* movzbl %al,%eax */
-            "\x48\x63\x44\x83\x64"         /* movslq 100(%rbx,%rax,4),%rax */
-            "\x48\x01\xd8"                 /* add    %rbx,%rax */
-            "\xff\xe0";                    /* jmpq   *%rax */
-        const size_t bytes_len = sizeof(bytes) - 1;
+        memory.i32_ = {{1111, 10}, {1115, 20}, {1119, 30}, {1123, 40}, {1127, 50},
+                       {1131, 60}, {1135, 70}, {1139, 80}, {1143, 90}, {1147, 100}};
 
-        memory.i32_ = {{1115, 10}, {1119, 20}, {1123, 30}, {1127, 40}, {1131, 50},
-                       {1135, 60}, {1139, 70}, {1143, 80}, {1147, 90}, {1151, 100}};
-
-        auto instructions = engine.disassemble(bytes, bytes_len, 0, 7);
+        const char bytes[] =
+            "cmp    $9,%al\n"
+            "ja     10\n"
+            "lea    1000(%rip),%rbx\n"
+            "movzbl %al,%eax\n"
+            "movslq 100(%rbx,%rax,4),%rax\n"
+            "add    %rbx,%rax\n"
+            "jmpq   *%rax\n";
+        auto instructions = engine.assemble_and_disassemble(bytes, 0, 7, 7);
         auto matches      = matcher.match_instructions(instructions->get());
         auto values       = matches[0]->evaluate(context, memory);
 
@@ -48,25 +46,25 @@ TEST_CASE("pattern tree should match pattern case 11", "[libresolver::cases::cas
         REQUIRE(context.get(value::VALUE_1).value_or(-1) == 100);
         REQUIRE(context.get(value::VALUE_2).value_or(-1) == 4);
         REQUIRE(context.get(value::VALUE_3).value_or(-1) == 1000);
-        REQUIRE(context.get(value::VALUE_4).value_or(-1) == 18446744073709547249);
+        REQUIRE(context.get(value::VALUE_4).value_or(-1) == 10);
         REQUIRE(context.get(value::VALUE_5).value_or(-1) == 9);
         REQUIRE(context.get(value::VALUE_6).value_or(-1) == -1);
         REQUIRE(context.get(value::VALUE_7).value_or(-1) == -1);
         REQUIRE(context.get(value::VALUE_8).value_or(-1) == -1);
         REQUIRE(context.get(value::VALUE_9).value_or(-1) == -1);
         REQUIRE(context.get(value::VALUE_10).value_or(-1) == -1);
-        REQUIRE(context.get_rip(0).value_or(-1) == 15);
+        REQUIRE(context.get_rip(0).value_or(-1) == 11);
         REQUIRE(values.size() == 10);
-        REQUIRE(values.contains(1025));
-        REQUIRE(values.contains(1035));
-        REQUIRE(values.contains(1045));
-        REQUIRE(values.contains(1055));
-        REQUIRE(values.contains(1065));
-        REQUIRE(values.contains(1075));
-        REQUIRE(values.contains(1085));
-        REQUIRE(values.contains(1095));
-        REQUIRE(values.contains(1105));
-        REQUIRE(values.contains(1115));
+        REQUIRE(values.contains(1021));
+        REQUIRE(values.contains(1031));
+        REQUIRE(values.contains(1041));
+        REQUIRE(values.contains(1051));
+        REQUIRE(values.contains(1061));
+        REQUIRE(values.contains(1071));
+        REQUIRE(values.contains(1081));
+        REQUIRE(values.contains(1091));
+        REQUIRE(values.contains(1101));
+        REQUIRE(values.contains(1111));
     }
 }
 

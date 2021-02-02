@@ -58,6 +58,8 @@ libresolver::pattern::tree create_tree() {
     add_pattern<libresolver::cases::case_20>(tree);
     add_pattern<libresolver::cases::case_21>(tree);
 
+    std::cout << std::to_string(tree) << std::endl;
+
     return tree;
 }
 

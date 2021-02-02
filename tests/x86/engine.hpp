@@ -5,67 +5,53 @@
 #include <functional>
 
 #include <capstone/capstone.h>
-#include <tests/external/catch.hpp>
+#include <keystone/keystone.h>
 #include <libresolver/utils/no_copy.hpp>
 
 namespace tests::x86 {
 
 class engine {
 public:
-    engine() {
-        REQUIRE(cs_open(CS_ARCH_X86, CS_MODE_64, &handle_) == CS_ERR_OK);
-        REQUIRE(cs_option(handle_, CS_OPT_DETAIL, CS_OPT_ON) == CS_ERR_OK);
-        REQUIRE(cs_option(handle_, CS_OPT_SYNTAX, CS_OPT_SYNTAX_ATT) == CS_ERR_OK);
-    }
+    engine();
+    ~engine();
 
-    ~engine() {
-        REQUIRE(cs_close(&handle_) == CS_ERR_OK);
-    }
-
-    class instructions : libresolver::utils::no_copy {
+    class decoded : public libresolver::utils::no_copy {
     public:
-        instructions(cs_insn& insns, size_t count) : insns_(&insns), count_(count) {}
+        decoded(cs_insn& insns, size_t count);
+        ~decoded();
 
-        ~instructions() {
-            cs_free(insns_, count_);
-        }
-
-        size_t size() const {
-            return count_;
-        }
-
-        const cs_insn& operator[](size_t i) const {
-            return insns_[i];
-        }
-
-        std::vector<std::reference_wrapper<cs_insn>> get(bool reverse = true) {
-            std::vector<std::reference_wrapper<cs_insn>> vector;
-
-            for (size_t i = 0; i < count_; i++) {
-                if (reverse) {
-                    vector.push_back(insns_[count_ - i - 1]);
-                } else {
-                    vector.push_back(insns_[i]);
-                }
-            }
-
-            return vector;
-        }
+        size_t size() const;
+        const cs_insn& at(size_t i) const;
+        const cs_insn& operator[](size_t i) const;
+        std::vector<std::reference_wrapper<cs_insn>> get(bool reverse = true);
 
     private:
         cs_insn* insns_;
         const size_t count_;
     };
 
-    std::unique_ptr<instructions> disassemble(const unsigned char* bytes, size_t bytes_len, uint64_t addr, size_t expected_count) {
-        cs_insn* insns;
-        REQUIRE(cs_disasm(handle_, bytes, bytes_len, addr, 0, &insns) == expected_count);
+    class encoded : public libresolver::utils::no_copy {
+    public:
+        encoded(uint8_t& bytes, size_t count);
+        ~encoded();
 
-        return std::make_unique<instructions>(*insns, expected_count);
-    }
+        size_t size() const;
+        uint8_t at(size_t i) const;
+        uint8_t operator[](size_t i) const;
+        const uint8_t* get() const;
+
+    private:
+        uint8_t* bytes_;
+        size_t count_;
+    };
+
+    std::unique_ptr<decoded> disassemble(const unsigned char* bytes, size_t bytes_len, uint64_t addr, size_t expected_count);
+    std::unique_ptr<encoded> assemble(const char* assembly, uint64_t addr, size_t expected_instructions);
+    std::unique_ptr<decoded> assemble_and_disassemble(const char* assembly, uint64_t addr, size_t expected_statements, size_t expected_instructions);
 
 private:
-    csh handle_;
+    csh cs_handle_;
+    ks_engine* ks_handle_;
 };
 
 } /* namespace tests::x86 */

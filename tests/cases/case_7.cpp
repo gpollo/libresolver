@@ -18,19 +18,18 @@ TEST_CASE("pattern tree should match pattern case 7", "[libresolver::cases::case
     const libresolver::context& context = matcher.get_context();
 
     SECTION("example 1") {
-        const unsigned char bytes[] =
-            "\x48\x8d\x1d\xe8\x03\x00\x00" /* lea    1000(%rip),%rbx */
-            "\x3c\x06"                     /* cmp    $6,%al */
-            "\x0f\x87\xe0\xee\xff\xff"     /* ja     10 */
-            "\x0f\xb6\xc0"                 /* movzbl %al,%eax */
-            "\x48\x63\x44\x83\x64"         /* movslq 100(%rbx,%rax,4),%rax */
-            "\x48\x01\xd8"                 /* add    %rbx,%rax */
-            "\xff\xe0";                    /* jmpq   *%rax */
-        const size_t bytes_len = sizeof(bytes) - 1;
-
         memory.i32_ = {{1107, 10}, {1111, 20}, {1115, 30}, {1119, 40}, {1123, 50}, {1127, 60}, {1131, 70}};
 
-        auto instructions = engine.disassemble(bytes, bytes_len, 0, 7);
+        const char bytes[] =
+            "lea    1000(%rip),%rbx\n"
+            "cmp    $6,%al\n"
+            "ja     10\n"
+            "movzbl %al,%eax\n"
+            "movslq 100(%rbx,%rax,4),%rax\n"
+            "add    %rbx,%rax\n"
+            "jmpq   *%rax\n";
+
+        auto instructions = engine.assemble_and_disassemble(bytes, 0, 7, 7);
         auto matches      = matcher.match_instructions(instructions->get());
         auto values       = matches[0]->evaluate(context, memory);
 
@@ -46,7 +45,7 @@ TEST_CASE("pattern tree should match pattern case 7", "[libresolver::cases::case
         REQUIRE(context.get(reg::REG_9).value_or(x86_reg::X86_REG_INVALID) == x86_reg::X86_REG_INVALID);
         REQUIRE(context.get(value::VALUE_1).value_or(-1) == 100);
         REQUIRE(context.get(value::VALUE_2).value_or(-1) == 4);
-        REQUIRE(context.get(value::VALUE_3).value_or(-1) == 18446744073709547247);
+        REQUIRE(context.get(value::VALUE_3).value_or(-1) == 10);
         REQUIRE(context.get(value::VALUE_4).value_or(-1) == 6);
         REQUIRE(context.get(value::VALUE_5).value_or(-1) == 1000);
         REQUIRE(context.get(value::VALUE_6).value_or(-1) == -1);

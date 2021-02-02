@@ -6,6 +6,7 @@ add_global_arguments('-DLIBRESOLVER_BUILD', language : 'cpp')
 ################
 
 libcapstone_dep = dependency('capstone', required: true)
+libkeystone_dep = dependency('keystone', required: true)
 
 ###############
 # libresolver #
@@ -118,10 +119,12 @@ tests_sources = [
     'tests/memory.cpp',
     'tests/pattern/tree.cpp',
     'tests/watch_list.cpp',
+    'tests/x86/engine.cpp',
 ]
 
 tests_deps = [
     libcapstone_dep,
+    libkeystone_dep,
 ]
 
 tests_executable = executable(
