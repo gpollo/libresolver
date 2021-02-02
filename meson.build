@@ -40,6 +40,7 @@ libresolver_sources = [
     'source/cases/case_21.cpp',
     'source/instruction.cpp',
     'source/memory.cpp',
+    'source/pattern/actions.cpp',
     'source/pattern/tree.cpp',
     'source/placeholder.cpp',
     'source/porcelain.cpp',

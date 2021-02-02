@@ -4,8 +4,6 @@
 
 * Some sequences of instructions should be considered _atomic_
   in the tree. For example, the `ja` followed by a `cmp`.
-* Check if different actions should be an error. It probably
-  shouldn't. Search for "used by other pattern" in the cases.
 * Does register size really matter? Do we need a pattern for
   byte, word, double-words and quad-words? Or a catch-all pattern
   is good enough?

@@ -37,14 +37,7 @@ class node {
         }
 
         if (childs_->contains(instruction)) {
-            const auto& current_node = childs_->at(instruction);
-            if (current_node.get_actions() != actions) {
-                ERR("current node actions are different");
-                ERR("instruction: " << std::to_string(instruction));
-                ERR("   old actions: " << std::to_string(current_node.get_actions()));
-                ERR("   new actions: " << std::to_string(actions));
-                return false;
-            }
+            childs_->at(instruction).merge_actions(actions);
         } else {
             childs_->insert({instruction, node(actions)});
         }
@@ -82,10 +75,14 @@ class node {
     }
 
    private:
-    const actions actions_;
+    actions actions_;
     std::unique_ptr<std::unordered_map<instruction::base, node>> childs_ =
         std::make_unique<std::unordered_map<instruction::base, node>>();
     std::vector<std::shared_ptr<match>> matches_ = {};
+
+    void merge_actions(const actions& actions) {
+        actions_.merge(actions);
+    }
 };
 
 } /* namespace libresolver::pattern */
