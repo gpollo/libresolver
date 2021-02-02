@@ -8,6 +8,8 @@ using libresolver::placeholder::reg;
 using libresolver::placeholder::value;
 using libresolver::utils::registers::size;
 
+case_21::case_21(arch arch) : case_base("case-21", arch) {}
+
 pattern::tree::pattern case_21::get_pattern() const {
     /*
      * For non position-independent code. Jump target addresses
@@ -102,10 +104,6 @@ pattern::tree::pattern case_21::get_pattern() const {
         }
         /* clang-format on */
     };
-}
-
-std::string case_21::get_name() const {
-    return "case-21";
 }
 
 std::unordered_set<uint64_t> case_21::evaluate(const context& context, const memory& memory) const {

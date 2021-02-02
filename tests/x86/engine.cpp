@@ -5,11 +5,21 @@ namespace tests::x86 {
 
 /* engine class */
 
-engine::engine() {
-    REQUIRE(cs_open(CS_ARCH_X86, CS_MODE_64, &cs_handle_) == CS_ERR_OK);
+engine::engine(libresolver::arch arch) {
+    switch (arch) {
+    case libresolver::arch::X86_32:
+        REQUIRE(cs_open(CS_ARCH_X86, CS_MODE_32, &cs_handle_) == CS_ERR_OK);
+        REQUIRE(ks_open(KS_ARCH_X86, KS_MODE_32, &ks_handle_) == KS_ERR_OK);
+        break;
+
+    case libresolver::arch::X86_64:
+        REQUIRE(cs_open(CS_ARCH_X86, CS_MODE_64, &cs_handle_) == CS_ERR_OK);
+        REQUIRE(ks_open(KS_ARCH_X86, KS_MODE_64, &ks_handle_) == KS_ERR_OK);
+        break;
+    }
+
     REQUIRE(cs_option(cs_handle_, CS_OPT_DETAIL, CS_OPT_ON) == CS_ERR_OK);
     REQUIRE(cs_option(cs_handle_, CS_OPT_SYNTAX, CS_OPT_SYNTAX_ATT) == CS_ERR_OK);
-    REQUIRE(ks_open(KS_ARCH_X86, KS_MODE_64, &ks_handle_) == KS_ERR_OK);
     REQUIRE(ks_option(ks_handle_, KS_OPT_SYNTAX, KS_OPT_SYNTAX_ATT) == KS_ERR_OK);
 }
 

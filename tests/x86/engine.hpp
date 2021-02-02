@@ -7,12 +7,13 @@
 #include <capstone/capstone.h>
 #include <keystone/keystone.h>
 #include <libresolver/utils/no_copy.hpp>
+#include <libresolver/arch.hpp>
 
 namespace tests::x86 {
 
 class engine {
 public:
-    engine();
+    engine(libresolver::arch arch = libresolver::arch::X86_64);
     ~engine();
 
     class decoded : public libresolver::utils::no_copy {

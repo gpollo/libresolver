@@ -27,36 +27,36 @@
 namespace tests::pattern {
 
 template <typename PatternCase>
-void add_pattern(libresolver::pattern::tree& tree) {
-    auto new_case = std::make_shared<PatternCase>();
+void add_pattern(libresolver::pattern::tree& tree, libresolver::arch arch) {
+    auto new_case = std::make_shared<PatternCase>(arch);
     REQUIRE(new_case != nullptr);
     REQUIRE(tree.add(new_case->get_pattern(), new_case));
 }
 
-libresolver::pattern::tree create_tree() {
+libresolver::pattern::tree create_tree(libresolver::arch arch) {
     libresolver::pattern::tree tree;
 
-    add_pattern<libresolver::cases::case_1>(tree);
-    add_pattern<libresolver::cases::case_2>(tree);
-    add_pattern<libresolver::cases::case_3>(tree);
-    add_pattern<libresolver::cases::case_4>(tree);
-    add_pattern<libresolver::cases::case_5>(tree);
-    add_pattern<libresolver::cases::case_6>(tree);
-    add_pattern<libresolver::cases::case_7>(tree);
-    add_pattern<libresolver::cases::case_8>(tree);
-    add_pattern<libresolver::cases::case_9>(tree);
-    add_pattern<libresolver::cases::case_10>(tree);
-    add_pattern<libresolver::cases::case_11>(tree);
-    add_pattern<libresolver::cases::case_12>(tree);
-    add_pattern<libresolver::cases::case_13>(tree);
-    add_pattern<libresolver::cases::case_14>(tree);
-    add_pattern<libresolver::cases::case_15>(tree);
-    add_pattern<libresolver::cases::case_16>(tree);
-    add_pattern<libresolver::cases::case_17>(tree);
-    add_pattern<libresolver::cases::case_18>(tree);
-    add_pattern<libresolver::cases::case_19>(tree);
-    add_pattern<libresolver::cases::case_20>(tree);
-    add_pattern<libresolver::cases::case_21>(tree);
+    add_pattern<libresolver::cases::case_1>(tree, arch);
+    add_pattern<libresolver::cases::case_2>(tree, arch);
+    add_pattern<libresolver::cases::case_3>(tree, arch);
+    add_pattern<libresolver::cases::case_4>(tree, arch);
+    add_pattern<libresolver::cases::case_5>(tree, arch);
+    add_pattern<libresolver::cases::case_6>(tree, arch);
+    add_pattern<libresolver::cases::case_7>(tree, arch);
+    add_pattern<libresolver::cases::case_8>(tree, arch);
+    add_pattern<libresolver::cases::case_9>(tree, arch);
+    add_pattern<libresolver::cases::case_10>(tree, arch);
+    add_pattern<libresolver::cases::case_11>(tree, arch);
+    add_pattern<libresolver::cases::case_12>(tree, arch);
+    add_pattern<libresolver::cases::case_13>(tree, arch);
+    add_pattern<libresolver::cases::case_14>(tree, arch);
+    add_pattern<libresolver::cases::case_15>(tree, arch);
+    add_pattern<libresolver::cases::case_16>(tree, arch);
+    add_pattern<libresolver::cases::case_17>(tree, arch);
+    add_pattern<libresolver::cases::case_18>(tree, arch);
+    add_pattern<libresolver::cases::case_19>(tree, arch);
+    add_pattern<libresolver::cases::case_20>(tree, arch);
+    add_pattern<libresolver::cases::case_21>(tree, arch);
 
     std::cout << std::to_string(tree) << std::endl;
 

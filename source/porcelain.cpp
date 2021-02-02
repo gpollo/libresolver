@@ -33,7 +33,7 @@ static inline bool add_cases(libresolver::pattern::tree& tree, std::true_type /*
 
 template <typename Case, typename Next = void, typename... Args>
 static inline bool add_cases(libresolver::pattern::tree& tree, std::false_type /* is_last */) {
-    auto new_case = std::make_shared<Case>();
+    auto new_case = std::make_shared<Case>(libresolver::arch::X86_64);
     if (!(tree.add(new_case->get_pattern(), new_case))) {
         return false;
     }

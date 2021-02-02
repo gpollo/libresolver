@@ -8,6 +8,8 @@ using libresolver::placeholder::reg;
 using libresolver::placeholder::value;
 using libresolver::utils::registers::size;
 
+case_15::case_15(arch arch) : case_base("case-15", arch) {}
+
 pattern::tree::pattern case_15::get_pattern() const {
     /*
      * cmpl   $k9,k10(%r3)
@@ -96,10 +98,6 @@ pattern::tree::pattern case_15::get_pattern() const {
         }
         /* clang-format on */
     };
-}
-
-std::string case_15::get_name() const {
-    return "case-15";
 }
 
 std::unordered_set<uint64_t> case_15::evaluate(const context& context, const memory& memory) const {
