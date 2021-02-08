@@ -26,6 +26,11 @@
       On 64-bit systems, each entries are 8 bytes. On 32-bit systems,
       each entries are 4 bytes. Right now, we assume entries that are
       8 bytes long.
+    * To properly support 32-bit systems, we need the symbol table as
+      input. On 32-bit systems, a register is resolved using a call
+      to a method which resolve the global offset table. When matching
+      a call instruction, it would be necessary to check which function
+      it lands using the symbol table.
 
 ## Tail Optimized Indirect Call
 
