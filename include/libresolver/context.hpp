@@ -86,6 +86,8 @@ class context {
             return create_instruction<instruction::add>(insn, operands[0], operands[1]);
         case instruction::sub::INSN:
             return create_instruction<instruction::sub>(insn, operands[0], operands[1]);
+        case instruction::call::INSN:
+            return create_instruction<instruction::call>(insn, operands[0]);
         case instruction::cmp::INSN:
             return create_instruction<instruction::cmp>(insn, operands[0], operands[1]);
         case instruction::cltq::INSN:

@@ -50,3 +50,16 @@
 93912806519553: pop r15
 93912806519555: jmp rax
 ```
+
+## 32-bit case
+
+```
+12a59:       e8 d2 84 ff ff          call   af3
+12a5e:       81 c3 a2 a5 36 00       add    $0x36a5a2,%ebx
+135fe:       83 7c 24 60 06          cmpl   $0x6,0x60(%esp)
+13603:       0f 87 de 1a 00 00       ja     150e7 <.L739+0x897>
+13609:       8b 44 24 60             mov    0x60(%esp),%eax
+1360d:       8b b4 83 c8 08 ed ff    mov    -0x12f738(%ebx,%eax,4),%esi
+13614:       01 de                   add    %ebx,%esi
+13616:       ff e6                   jmp    *%esi
+```

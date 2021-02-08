@@ -19,7 +19,7 @@ class base {
     const bool operator==(const base& other) const;
 
    protected:
-    const x86_insn insn_;
+    x86_insn insn_;
     std::vector<operand::base_ptr> operands_;
 
     friend std::hash<base>;
@@ -58,6 +58,7 @@ class two_ops : public base {
 
 using add    = instruction::two_ops<x86_insn::X86_INS_ADD>;
 using sub    = instruction::two_ops<x86_insn::X86_INS_SUB>;
+using call   = instruction::one_op<x86_insn::X86_INS_CALL>;
 using cmp    = instruction::two_ops<x86_insn::X86_INS_CMP>;
 using cltq   = instruction::zero_op<x86_insn::X86_INS_CDQE>;
 using ja     = instruction::one_op<x86_insn::X86_INS_JA>;

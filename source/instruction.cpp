@@ -26,6 +26,8 @@ string to_string_insn(x86_insn insn) {
         return "add";
     case libresolver::instruction::sub::INSN:
         return "sub";
+    case libresolver::instruction::call::INSN:
+        return "call";
     case libresolver::instruction::cmp::INSN:
         return "cmp";
     case libresolver::instruction::cltq::INSN:
