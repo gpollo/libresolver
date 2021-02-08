@@ -5,7 +5,7 @@
 
 namespace tests::x86 {
 
-TEST_CASE("watch list should track registers and instructions", "[libresolver::watch_list]") {
+TEST_CASE("watch-list-track-registers-instructions") {
     libresolver::watch_list watch_list;
 
     auto insns = data::get_instructions();

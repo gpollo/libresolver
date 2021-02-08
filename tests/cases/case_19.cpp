@@ -9,7 +9,7 @@ using libresolver::placeholder::value;
 
 namespace tests::cases::case_19 {
 
-TEST_CASE("pattern tree should match pattern case 19", "[libresolver::cases::case_19]") {
+TEST_CASE("match-case-19") {
     x86::engine engine;
     dummy::memory memory;
 

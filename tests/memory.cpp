@@ -26,7 +26,7 @@ static void test_memory_accesses(std::function<std::optional<T>(uint64_t)> read_
     }
 }
 
-TEST_CASE("reading from process memory should work", "[libresolver::memory]") {
+TEST_CASE("read-process-memory") {
     libresolver::process_memory memory;
 
     SECTION("reading uint8_t should work") {

@@ -8,7 +8,7 @@
 
 namespace tests::x86 {
 
-TEST_CASE("context should create instructions", "[libresolver::context]") {
+TEST_CASE("context-create-instructions") {
     libresolver::context context;
 
     auto insns = data::get_instructions();
