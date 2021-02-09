@@ -1,12 +1,11 @@
 #include <libresolver/cases/case_20.hpp>
+#include <libresolver/cases/utils.hpp>
 #include <libresolver/log.hpp>
 #include <libresolver/utils/optional.hpp>
 
-namespace libresolver::cases {
+using namespace libresolver::cases::utils;
 
-using libresolver::placeholder::reg;
-using libresolver::placeholder::value;
-using libresolver::utils::registers::size;
+namespace libresolver::cases {
 
 case_20::case_20(arch arch) : case_base("case-20", arch) {}
 
@@ -30,96 +29,35 @@ pattern::tree::pattern case_20::get_pattern() const {
      * where k5 + k10 == 0.
      */
     return {
-        /* clang-format off */
-        {
-            instruction::jmp(
-                operand::make_reg(reg::REG_1, size::QWORD)
-            ), {
-                .track_regs_ = {reg::REG_1},
-            }
-        }, {
-            instruction::mov(
-                operand::make_mem4(value::VALUE_1, reg::REG_2, size::QWORD, reg::REG_1, size::QWORD, value::VALUE_2),
-                operand::make_reg(reg::REG_1, size::QWORD)
-            ), {
-                .track_regs_ = {reg::REG_2},
-            }
-        }, {
-            instruction::movzbl(
-                operand::make_mem4(value::VALUE_3, reg::REG_3, size::QWORD, reg::REG_1, size::QWORD, value::VALUE_4),
-                operand::make_reg(reg::REG_1, size::DWORD)
-            ), {
-                .track_regs_ = {reg::REG_3},
-            }
-        }, {
-            instruction::cltq(), {}
-        }, {
-            instruction::sub(
-                operand::make_imm(value::VALUE_5),
-                operand::make_reg(reg::REG_1, size::DWORD)
-            ), {}
-        }, {
-            instruction::lea(
-                operand::make_mem2(value::VALUE_6, reg::RIP, size::QWORD),
-                operand::make_reg(reg::REG_2, size::QWORD)
-            ), {
-                .ignore_regs_ = {reg::REG_2},
-            }
-        }, {
-            instruction::lea(
-                operand::make_mem2(value::VALUE_7, reg::RIP, size::QWORD),
-                operand::make_reg(reg::REG_3, size::QWORD)
-            ), {
-                .ignore_regs_ = {reg::REG_3},
-            }
-        }, {
-            instruction::movsbl(
-                operand::make_reg(reg::REG_4, size::BYTE),
-                operand::make_reg(reg::REG_1, size::DWORD)
-            ), {
-                .track_insns_ = {X86_INS_JA},
-            }
-        }, {
-            instruction::ja(
-                operand::make_imm(value::VALUE_8)
-            ), {
-                .track_insns_ = {X86_INS_CMP},
-                .ignore_insns_ = {X86_INS_JA},
-            }
-        }, {
-            instruction::cmp(
-                operand::make_imm(value::VALUE_9),
-                operand::make_reg(reg::REG_1, size::BYTE)
-            ), {
-                .ignore_insns_ = {X86_INS_CMP},
-            }
-        }, {
-            instruction::lea(
-                operand::make_mem2(value::VALUE_10, reg::REG_4, size::QWORD),
-                operand::make_reg(reg::REG_1, size::DWORD)
-            ), {
-                .ignore_regs_ = {reg::REG_1, reg::REG_4},
-            }
-        }
-        /* clang-format on */
+        jmp(reg(R1), {TRACK_R1}),
+        mov(mem4(K1, R2, R1, K2), reg(R1), {TRACK_R2}),
+        movzbl(mem4(K3, R3, R1, K4), reg(R1D), {TRACK_R3}),
+        cltq({}),
+        sub(imm(K5), reg(R1D), {}),
+        lea(mem2(K6, RIP), reg(R2), {IGNORE_R2}),
+        lea(mem2(K7, RIP), reg(R3), {IGNORE_R3}),
+        movsbl(reg(R4B), reg(R1D), {TRACK_INS_JA}),
+        ja(imm(K8), {TRACK_INS_CMP, IGNORE_INS_JA}),
+        cmp(imm(K9), reg(R1B), {IGNORE_INS_CMP}),
+        lea(mem2(K10, R4), reg(R1D), {IGNORE_R1, IGNORE_R4}),
     };
 }
 
 std::unordered_set<uint64_t> case_20::evaluate(const context& context, const memory& memory) const {
     auto rip0_opt = context.get_rip(0);
     auto rip1_opt = context.get_rip(1);
-    auto k1_opt   = context.get(value::VALUE_1);
-    auto k2_opt   = context.get(value::VALUE_2);
-    auto k3_opt   = context.get(value::VALUE_3);
-    auto k4_opt   = context.get(value::VALUE_4);
-    auto k5_opt   = context.get(value::VALUE_5);
-    auto k6_opt   = context.get(value::VALUE_6);
-    auto k7_opt   = context.get(value::VALUE_7);
-    auto k9_opt   = context.get(value::VALUE_9);
-    auto k10_opt  = context.get(value::VALUE_10);
+    auto k1_opt   = context.get(K1);
+    auto k2_opt   = context.get(K2);
+    auto k3_opt   = context.get(K3);
+    auto k4_opt   = context.get(K4);
+    auto k5_opt   = context.get(K5);
+    auto k6_opt   = context.get(K6);
+    auto k7_opt   = context.get(K7);
+    auto k9_opt   = context.get(K9);
+    auto k10_opt  = context.get(K10);
 
-    if (!utils::optional::all_value(rip0_opt, rip1_opt, k1_opt, k2_opt, k3_opt, k4_opt, k5_opt, k6_opt, k7_opt, k9_opt,
-                                    k10_opt)) {
+    if (!libresolver::utils::optional::all_value(rip0_opt, rip1_opt, k1_opt, k2_opt, k3_opt, k4_opt, k5_opt, k6_opt,
+                                                 k7_opt, k9_opt, k10_opt)) {
         ERR("missing matched values");
         return {};
     }
