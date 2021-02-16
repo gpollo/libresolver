@@ -1,0 +1,43 @@
+% To compile, run:
+%
+%  $ latexmk -shell-escape regular-expression.tex -pdf
+%
+% Then use Inkscape to convert to SVG.
+%
+\documentclass{standalone}
+\usepackage[utf8]{inputenc}
+\usepackage[francais]{babel}
+\usepackage[T1]{fontenc}
+\usepackage{standalone}
+\usepackage{tikz}
+
+\renewcommand{\familydefault}{\sfdefault}
+
+\begin{document}
+\begin{tikzpicture}[node distance = 2cm]
+    % pattern 1
+    \node[draw, circle, fill] (START) {};
+    \node[draw, circle, right of=START]                   (S1) {$S_1$};
+    \node[draw, circle, right of=S1]                      (S2) {$S_2$};
+    \node[draw, circle, right of=S2]                      (S3) {$S_3$};
+    \node[draw, circle, right of=S3]                      (S4) {$S_4$};
+    \node[draw, circle, right of=S4]                      (S5) {$S_5$};
+    \node[draw, circle, right of=S5, double distance=1pt] (S6) {$S_6$};
+    \node[right of=S6, align=center, text width=2cm, xshift=-5mm] {matches \color{blue}{$abbc^*d$}};
+    \draw[->] (START) to                                                              (S1);
+    \draw[->] (S1)    to[edge node={node[above] {$a$}}]                               (S2);
+    \draw[->] (S2)    to[edge node={node[above] {$b$}}]                               (S3);
+    \draw[->] (S3)    to[edge node={node[above] {$b$}}]                               (S4);
+    \draw[->] (S4)    to[edge node={node[above] {$c$}}]                               (S5);
+    \draw[->] (S4)    to[edge node={node[above] {$d$}}, out=90, in=90, looseness=1.4] (S6);
+    \draw[->] (S5)    to[edge node={node[above] {$c$}}, out=55, in=125, looseness=5]  (S5);
+    \draw[->] (S5)    to[edge node={node[above] {$d$}}]                               (S6);
+
+    % pattern 2
+    \node[draw, circle, below of=S5]                      (S7) {$S_7$};
+    \node[draw, circle, right of=S7, double distance=1pt] (S8) {$S_8$};
+    \node[right of=S8, align=center, text width=2cm, xshift=-5mm] {matches \color{blue}{$abbae$}};
+    \draw[->] (S4)    to[edge node={node[above] {$a$}}, out=270, in=180]              (S7);
+    \draw[->] (S7)    to[edge node={node[above] {$e$}}]                               (S8);
+\end{tikzpicture}
+\end{document}
