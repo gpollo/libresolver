@@ -5,7 +5,7 @@ project('libresolver', ['cpp'])
 ################
 
 libcapstone_dep = dependency('capstone', required: true)
-libkeystone_dep = dependency('keystone', required: true)
+libkeystone_dep = dependency('keystone', required: false)
 
 ###############
 # libresolver #
@@ -128,14 +128,20 @@ tests_deps = [
     libkeystone_dep,
 ]
 
-tests_executable = executable(
-    'tests', tests_sources,
-    include_directories: tests_includes,
-    dependencies: tests_deps,
-    cpp_args: ['-DLIBRESOLVER_BUILD', '-std=c++20', '-g'],
-)
+if libkeystone_dep.found()
+    tests_executable = executable(
+        'tests', tests_sources,
+        include_directories: tests_includes,
+        dependencies: tests_deps,
+        cpp_args: ['-DLIBRESOLVER_BUILD', '-std=c++20', '-g'],
+    )
 
-run_target('check',
-    command: [tests_executable],
-    depends: [tests_executable],
-)
+    run_target('check',
+        command: [tests_executable],
+        depends: [tests_executable],
+    )
+else
+    run_target('check',
+        command: ['echo', 'Tests are disabled. Install keystone library and rebuild the project.'],
+    )
+endif
