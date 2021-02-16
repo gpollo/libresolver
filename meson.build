@@ -132,7 +132,7 @@ tests_deps = [
     libkeystone_dep,
 ]
 
-if libkeystone_dep.found()
+if libkeystone_dep.found() and not(meson.is_subproject())
     tests_executable = executable(
         'tests', tests_sources,
         include_directories: tests_includes,
@@ -146,6 +146,6 @@ if libkeystone_dep.found()
     )
 else
     run_target('check',
-        command: ['echo', 'Tests are disabled. Install keystone library and rebuild the project.'],
+        command: ['echo', 'Tests are disabled. Either keystone library is not found or we\'re in a subproject.'],
     )
 endif
