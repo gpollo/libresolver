@@ -1,5 +1,4 @@
 project('libresolver', ['cpp'])
-add_global_arguments('-DLIBRESOLVER_BUILD', language : 'cpp')
 
 ################
 # dependencies #
@@ -57,7 +56,7 @@ libresolver = shared_library(
     'resolver', libresolver_sources,
     include_directories: libresolver_includes,
     dependencies: libresolver_deps,
-    cpp_args: ['-std=c++20', '-g'],
+    cpp_args: ['-DLIBRESOLVER_BUILD', '-std=c++20', '-g'],
     install: true,
 )
 
@@ -133,7 +132,7 @@ tests_executable = executable(
     'tests', tests_sources,
     include_directories: tests_includes,
     dependencies: tests_deps,
-    cpp_args: ['-std=c++20', '-g'],
+    cpp_args: ['-DLIBRESOLVER_BUILD', '-std=c++20', '-g'],
 )
 
 run_target('check',
