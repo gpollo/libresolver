@@ -52,12 +52,16 @@ libresolver_deps = [
     libcapstone_dep,
 ]
 
-libresolver = shared_library(
+libresolver = static_library(
     'resolver', libresolver_sources,
     include_directories: libresolver_includes,
     dependencies: libresolver_deps,
     cpp_args: ['-DLIBRESOLVER_BUILD', '-std=c++20', '-g'],
-    install: true,
+)
+
+libresolver_dep = declare_dependency(
+    include_directories : libresolver_includes,
+    link_with : libresolver,
 )
 
 ###########
