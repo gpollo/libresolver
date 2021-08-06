@@ -74,9 +74,9 @@ install_headers('include/libresolver/porcelain.hpp', subdir: 'libresolver')
 # format #
 ##########
 
-libresolver_find_include = '`find include -type f -iname \'*.hpp\'`'
-libresolver_find_source = '`find source -type f -iname \'*.cpp\'`'
-libresolver_find_tests = '`find tests -type f -iname \'*.cpp\'`'
+libresolver_find_include = '`find @0@/include -type f -iname \'*.hpp\'`'.format(meson.source_root())
+libresolver_find_source = '`find @0@/source -type f -iname \'*.cpp\'`'.format(meson.source_root())
+libresolver_find_tests = '`find @0@/tests -type f -iname \'*.cpp\'`'.format(meson.source_root())
 libresolver_find_format = libresolver_find_include + ' ' + libresolver_find_source + ' ' + libresolver_find_tests
 
 run_target('format',
