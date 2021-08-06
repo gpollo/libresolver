@@ -23,9 +23,9 @@ TEST_CASE("match-case-4") {
 
         const char bytes[] =
             "cmp    $8,%ecx\n"
-            "ja     10\n"
-            "lea    1000(%rip),%rbx\n"
-            "movslq 100(%rbx,%rcx,4),%rax\n"
+            "ja     0xA\n"
+            "lea    0x3E8(%rip),%rbx\n"
+            "movslq 0x64(%rbx,%rcx,4),%rax\n"
             "add    %rbx,%rax\n"
             "jmpq   *%rax\n";
         auto instructions = engine.assemble_and_disassemble(bytes, 0, 6, 6);

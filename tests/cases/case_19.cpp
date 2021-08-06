@@ -23,13 +23,13 @@ TEST_CASE("match-case-19") {
 
         const char bytes[] =
             "cmp  $8,%eax\n"
-            "ja   10\n"
+            "ja   0xA\n"
             "mov  %eax,%eax\n"
-            "lea  1000(,%rax,4),%rbx\n"
-            "lea  300(%rip),%rax\n"
-            "mov  100(%rbx,%rax,1),%eax\n"
+            "lea  0x3E8(,%rax,4),%rbx\n"
+            "lea  0x12C(%rip),%rax\n"
+            "mov  0x64(%rbx,%rax,1),%eax\n"
             "cltq\n"
-            "lea  1000(%rip),%rbx\n"
+            "lea  0x3E8(%rip),%rbx\n"
             "add  %rbx,%rax\n"
             "jmpq *%rax\n";
         auto instructions = engine.assemble_and_disassemble(bytes, 0, 10, 10);

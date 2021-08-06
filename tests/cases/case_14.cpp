@@ -21,10 +21,10 @@ TEST_CASE("match-case-14") {
         memory.i32_ = {{1107, 10}, {1111, 20}, {1115, 30}, {1119, 40}, {1123, 50}, {1127, 60}, {1131, 70}};
 
         const char bytes[] =
-            "lea    1000(%rip),%rbx\n"
+            "lea    0x3E8(%rip),%rbx\n"
             "cmp    $6,%cl\n"
-            "ja     10\n"
-            "movslq 100(%rbx,%rcx,4),%rax\n"
+            "ja     0xA\n"
+            "movslq 0x64(%rbx,%rcx,4),%rax\n"
             "add    %rbx,%rax\n"
             "jmpq   *%rax\n";
         auto instructions = engine.assemble_and_disassemble(bytes, 0, 6, 6);

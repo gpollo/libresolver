@@ -36,13 +36,13 @@ TEST_CASE("match-case-20") {
                        {1424, 1500}, {1432, 1510}};
 
         const char bytes[] =
-            "lea    -20(%rbx),%eax\n"
-            "cmp    $30,%al\n"
-            "ja     10\n"
+            "lea    -0x14(%rbx),%eax\n"
+            "cmp    $0x1E,%al\n"
+            "ja     0xA\n"
             "movsbl %bl,%eax\n"
-            "lea    2000(%rip),%rdi\n"
-            "lea    1000(%rip),%rcx\n"
-            "sub    $20,%eax\n"
+            "lea    0x7D0(%rip),%rdi\n"
+            "lea    0x3E8(%rip),%rcx\n"
+            "sub    $0x14,%eax\n"
             "cltq\n"
             "movzbl (%rdi,%rax,1),%eax\n"
             "mov    (%rcx,%rax,8),%rax\n"

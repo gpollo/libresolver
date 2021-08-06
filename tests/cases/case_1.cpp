@@ -22,9 +22,9 @@ TEST_CASE("match-case-1") {
 
         const char bytes[] =
             "cmp    $5,%ecx\n"
-            "ja     10\n"
+            "ja     0xA\n"
             "mov    %ecx,%eax\n"
-            "lea    1337(%rip),%rbx\n"
+            "lea    0x539(%rip),%rbx\n"
             "movslq (%rbx,%rax,4),%rax\n"
             "add    %rbx,%rax\n"
             "jmpq   *%rax\n";
@@ -68,9 +68,9 @@ TEST_CASE("match-case-1") {
 
         const char bytes[] =
             "cmp    $7,%eax\n"
-            "ja     10\n"
+            "ja     0xA\n"
             "mov    %eax,%esi\n"
-            "lea    1337(%rip),%rdx \n"
+            "lea    0x539(%rip),%rdx \n"
             "movslq (%rdx,%rsi,4),%rsi\n"
             "add    %rdx,%rsi\n"
             "jmpq   *%rsi\n";

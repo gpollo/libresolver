@@ -22,10 +22,10 @@ TEST_CASE("match-case-16") {
 
         const char bytes[] =
             "cmp    $5,%edx\n"
-            "ja     10\n"
+            "ja     0xA\n"
             "mov    %edx,%ecx\n"
-            "lea    1000(%rip),%rbx\n"
-            "movslq 100(%rbx,%rcx,4),%rax\n"
+            "lea    0x3E8(%rip),%rbx\n"
+            "movslq 0x64(%rbx,%rcx,4),%rax\n"
             "add    %rbx,%rax\n"
             "jmpq   *%rax\n";
         auto instructions = engine.assemble_and_disassemble(bytes, 0, 7, 7);

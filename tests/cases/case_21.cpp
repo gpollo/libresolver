@@ -36,15 +36,15 @@ TEST_CASE("match-case-21") {
                        {1433, 1500}, {1441, 1510}};
 
         const char bytes[] =
-            "lea    -20(%rbx),%eax\n"
-            "cmp    $30,%al\n"
-            "ja     10\n"
+            "lea    -0x14(%rbx),%eax\n"
+            "cmp    $0x1E,%al\n"
+            "ja     0xA\n"
             "movsbl %bl,%eax\n"
-            "lea    2000(%rip),%rdi\n"
-            "sub    $20,%eax\n"
+            "lea    0x7D0(%rip),%rdi\n"
+            "sub    $0x14,%eax\n"
             "cltq\n"
             "movzbl (%rdi,%rax,1),%eax\n"
-            "lea    1000(%rip),%rdi\n"
+            "lea    0x3E8(%rip),%rdi\n"
             "mov    (%rdi,%rax,8),%rax\n"
             "jmpq   *%rax\n";
         auto instructions = engine.assemble_and_disassemble(bytes, 0, 11, 11);
