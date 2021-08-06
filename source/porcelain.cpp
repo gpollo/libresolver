@@ -14,6 +14,7 @@
 #include <libresolver/cases/case_2.hpp>
 #include <libresolver/cases/case_20.hpp>
 #include <libresolver/cases/case_21.hpp>
+#include <libresolver/cases/case_22.hpp>
 #include <libresolver/cases/case_3.hpp>
 #include <libresolver/cases/case_4.hpp>
 #include <libresolver/cases/case_5.hpp>
@@ -65,14 +66,14 @@ int libresolver_x86_resolve(csh handle, cs_insn* insns, size_t insn_count, size_
 
     libresolver::pattern::tree tree;
 
-    bool success =
-        add_cases<libresolver::cases::case_1, libresolver::cases::case_2, libresolver::cases::case_3,
-                  libresolver::cases::case_4, libresolver::cases::case_5, libresolver::cases::case_6,
-                  libresolver::cases::case_7, libresolver::cases::case_8, libresolver::cases::case_9,
-                  libresolver::cases::case_10, libresolver::cases::case_11, libresolver::cases::case_12,
-                  libresolver::cases::case_13, libresolver::cases::case_14, libresolver::cases::case_15,
-                  libresolver::cases::case_16, libresolver::cases::case_17, libresolver::cases::case_18,
-                  libresolver::cases::case_19, libresolver::cases::case_20, libresolver::cases::case_21>(tree);
+    bool success = add_cases<libresolver::cases::case_1, libresolver::cases::case_2, libresolver::cases::case_3,
+                             libresolver::cases::case_4, libresolver::cases::case_5, libresolver::cases::case_6,
+                             libresolver::cases::case_7, libresolver::cases::case_8, libresolver::cases::case_9,
+                             libresolver::cases::case_10, libresolver::cases::case_11, libresolver::cases::case_12,
+                             libresolver::cases::case_13, libresolver::cases::case_14, libresolver::cases::case_15,
+                             libresolver::cases::case_16, libresolver::cases::case_17, libresolver::cases::case_18,
+                             libresolver::cases::case_19, libresolver::cases::case_20, libresolver::cases::case_21,
+                             libresolver::cases::case_22>(tree);
     if (!success) {
         return 0;
     }
