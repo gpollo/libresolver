@@ -89,6 +89,10 @@ int libresolver_x86_resolve(csh handle, cs_insn* insns, size_t insn_count, size_
         return 0;
     }
 
+    if (getenv("LIBRESOLVER_PRINT_TARGETS") != nullptr) {
+        std::cout << "pattern '" << matches[0]->get_name() << "'" << std::endl;
+    }
+
     *results = (uint64_t*)malloc(values.size() * sizeof(uint64_t));
 
     std::vector<uint64_t> values_vec(values.begin(), values.end());

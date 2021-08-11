@@ -18,7 +18,7 @@ TEST_CASE("match-case-17") {
     const libresolver::context& context = matcher.get_context();
 
     SECTION("example 1") {
-        memory.i32_ = {{1119, 10}, {1123, 20}, {1127, 30}, {1131, 40}, {1135, 50}, {1139, 60}};
+        memory.i32_ = {{1119, 10}, {1123, 20}, {1127, 30}, {1131, 40}, {1135, 50}};
 
         const char bytes[] =
             "lea    0x6(%rcx),%eax\n"
@@ -53,13 +53,12 @@ TEST_CASE("match-case-17") {
         REQUIRE(context.get(value::VALUE_9).value_or(-1) == -1);
         REQUIRE(context.get(value::VALUE_10).value_or(-1) == -1);
         REQUIRE(context.get_rip(0).value_or(-1) == 15);
-        REQUIRE(values.size() == 6);
+        REQUIRE(values.size() == 5);
         REQUIRE(values.contains(1025));
         REQUIRE(values.contains(1035));
         REQUIRE(values.contains(1045));
         REQUIRE(values.contains(1055));
         REQUIRE(values.contains(1065));
-        REQUIRE(values.contains(1075));
     }
 }
 

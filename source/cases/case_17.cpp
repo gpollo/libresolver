@@ -51,7 +51,7 @@ std::unordered_set<uint64_t> case_17::evaluate(const context& context, const mem
     auto k6   = k6_opt.value();
 
     std::unordered_set<uint64_t> values;
-    for (int i = static_cast<int64_t>(k5); i <= 0; i++) {
+    for (int i = static_cast<int64_t>(k5); i < 0; i++) {
         auto mem_opt = memory.read_i32(k1 + (rip0 + k3) + k2 * (k6 + i));
         if (!mem_opt.has_value()) {
             ERR("failed to read memory");
