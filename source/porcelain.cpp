@@ -15,6 +15,7 @@
 #include <libresolver/cases/case_20.hpp>
 #include <libresolver/cases/case_21.hpp>
 #include <libresolver/cases/case_22.hpp>
+#include <libresolver/cases/case_23.hpp>
 #include <libresolver/cases/case_3.hpp>
 #include <libresolver/cases/case_4.hpp>
 #include <libresolver/cases/case_5.hpp>
@@ -73,7 +74,7 @@ int libresolver_x86_resolve(csh handle, cs_insn* insns, size_t insn_count, size_
                              libresolver::cases::case_13, libresolver::cases::case_14, libresolver::cases::case_15,
                              libresolver::cases::case_16, libresolver::cases::case_17, libresolver::cases::case_18,
                              libresolver::cases::case_19, libresolver::cases::case_20, libresolver::cases::case_21,
-                             libresolver::cases::case_22>(tree);
+                             libresolver::cases::case_22, libresolver::cases::case_23>(tree);
     if (!success) {
         return 0;
     }
