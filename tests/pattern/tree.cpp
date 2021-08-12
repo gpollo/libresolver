@@ -14,6 +14,7 @@
 #include <libresolver/cases/case_21.hpp>
 #include <libresolver/cases/case_22.hpp>
 #include <libresolver/cases/case_23.hpp>
+#include <libresolver/cases/case_24.hpp>
 #include <libresolver/cases/case_3.hpp>
 #include <libresolver/cases/case_4.hpp>
 #include <libresolver/cases/case_5.hpp>
@@ -61,6 +62,7 @@ libresolver::pattern::tree create_tree(libresolver::arch arch) {
     add_pattern<libresolver::cases::case_21>(tree, arch);
     add_pattern<libresolver::cases::case_22>(tree, arch);
     add_pattern<libresolver::cases::case_23>(tree, arch);
+    add_pattern<libresolver::cases::case_24>(tree, arch);
 
     std::cout << std::to_string(tree) << std::endl;
 
