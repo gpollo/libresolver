@@ -1,0 +1,10 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+authors:
+- family-names: "Pollo-Guilbert"
+  given-names: "Gabriel-Andrew"
+  orcid: "https://orcid.org/0000-0001-6270-5469"
+title: "libresolver: resolving N-conditionals indirect jump using pattern matching"
+date-released: 2021-01-03
+url: "https://github.com/gpollo/libresolver"
+
